@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solução — Clima Safe</title>
+  <meta name="description" content="Simule o alerta de enchente do seu bairro em São Paulo ou use a previsão real de chuva.">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="topo">
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="faixa-emergencia">
+    <div class="container faixa-grade">
+      <p>Em emergência, ligue: <a href="tel:199">Defesa Civil 199</a> · <a href="tel:193">Bombeiros 193</a></p>
+      <div class="ajuste-fonte" role="group" aria-label="Tamanho do texto">
+        <span aria-hidden="true">Texto</span>
+        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A−</button>
+        <button type="button" id="fonte-maior" aria-label="Aumentar o texto">A+</button>
+      </div>
+    </div>
+  </div>
+  <header class="cabecalho">
+    <div class="container cabecalho-grade">
+      <a class="logo" href="index.html">
+        <img src="img/logo.svg" alt="" width="40" height="40">
+        <span>Clima Safe</span>
+      </a>
+      <button type="button" class="botao-menu" id="botao-menu" aria-expanded="false" aria-controls="menu-principal">Menu</button>
+      <nav class="navegacao" aria-label="Principal">
+        <ul class="menu" id="menu-principal">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="solucao.html" aria-current="page">Solução</a></li>
+          <li><a href="impacto.html">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="topo-pagina" aria-labelledby="titulo-solucao">
+      <div class="container">
+        <p class="sobretitulo">Solução</p>
+        <h1 id="titulo-solucao">Veja o alerta do seu bairro</h1>
+        <p class="lead">Escolha o bairro (pelo nome ou no mapa) e arraste o controle para simular uma chuva. Com internet, você também pode usar a previsão real de hoje e amanhã.</p>
+        <nav class="indice" aria-label="Nesta página">
+          <ul>
+            <li><a href="#simulador">Simulador</a></li>
+            <li><a href="#mapa">Mapa da Grande São Paulo</a></li>
+            <li><a href="#bairros">Bairros</a></li>
+            <li><a href="#regras">Como calculamos</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+    <section class="secao" id="simulador" aria-labelledby="titulo-simulador">
+      <div class="container secao-grade">
+        <h2 id="titulo-simulador">Simulador</h2>
+        <div class="secao-corpo">
+          <div class="simulador">
+            <div class="controles">
+              <div class="campo">
+                <label for="busca-bairro">Buscar bairro pelo nome</label>
+                <input type="search" id="busca-bairro" autocomplete="off" placeholder="Ex.: Penha, Sé, Jardim Helena" aria-describedby="aviso-busca">
+                <p class="nota" id="aviso-busca" role="status"></p>
+                <label for="select-bairro">Bairro</label>
+                <select id="select-bairro"></select>
+              </div>
+              <div class="campo">
+                <label for="faixa-chuva">Simular chuva: <span class="valor-chuva" id="valor-chuva">0 mm/h</span></label>
+                <input type="range" id="faixa-chuva" min="0" max="100" step="1" value="0">
+                <div class="escala" aria-hidden="true">
+                  <span class="e0">0</span><span class="e20">20</span><span class="e30">30</span><span class="e60">60</span><span class="e100">100</span>
+                </div>
+                <p class="nota">As cores da barra são as faixas do INMET: verde até 20, amarelo de 20 a 30, laranja de 30 a 60 e vermelho acima de 60 mm/h.</p>
+              </div>
+              <div class="campo">
+                <button type="button" class="botao botao-secundario" id="btn-buscar">Buscar previsão real</button>
+                <p class="status" id="status-previsao" role="status"></p>
+              </div>
+            </div>
+            <div class="painel" id="painel-resultado" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="secao" id="mapa" aria-labelledby="titulo-mapa">
+      <div class="container secao-grade">
+        <h2 id="titulo-mapa">Mapa da Grande São Paulo</h2>
+        <div class="secao-corpo">
+          <p>A capital aparece dividida nos seus 96 bairros; em volta, os outros 38 municípios da Grande São Paulo. A cor mostra o nível de alerta. Passe o mouse para ver o nome e onde fica; <strong>clique num bairro para escolhê-lo no simulador</strong>.</p>
+          <div class="mapa-ferramentas" role="group" aria-label="Zoom do mapa">
+            <button type="button" class="botao botao-secundario botao-zoom" id="zoom-mais" aria-label="Aproximar">+</button>
+            <button type="button" class="botao botao-secundario botao-zoom" id="zoom-menos" aria-label="Afastar">−</button>
+            <button type="button" class="botao botao-secundario" id="zoom-capital">Ver a capital</button>
+            <button type="button" class="botao botao-secundario" id="zoom-escolhido">Ver o bairro escolhido</button>
+            <button type="button" class="botao botao-secundario" id="zoom-tudo">Ver tudo</button>
+            <span class="nivel-zoom" id="nivel-zoom" aria-live="polite"></span>
+            <a class="pular-mapa" href="#bairros">Pular o mapa</a>
+          </div>
+          <p class="nota">Para aproximar: botões acima, duplo clique ou Ctrl + roda do mouse. Com o mapa aproximado, arraste para mover. No teclado: Tab passa pelas áreas, Enter escolhe, + e − aproximam e as setas movem.</p>
+          <div class="mapa-caixa">
+            <svg id="mapa-svg" role="group" aria-label="Mapa da Grande São Paulo com o nível de alerta de cada bairro da capital e de cada município"></svg>
+          </div>
+          <div class="info-mapa" id="info-mapa" role="status"><p>Clique num bairro para escolhê-lo, ou num município para ver a chuva e o que fazer.</p></div>
+          <ul class="legenda-mapa">
+            <li><span class="amostra amostra-verde"></span>Verde: sem alerta</li>
+            <li><span class="amostra amostra-amarelo"></span>Amarelo: perigo potencial</li>
+            <li><span class="amostra amostra-laranja"></span>Laranja: perigo</li>
+            <li><span class="amostra amostra-vermelho"></span>Vermelho: grande perigo</li>
+            <li><span class="amostra amostra-indisponivel"></span>Cinza: sem previsão</li>
+            <li><span class="amostra amostra-escolhido"></span>Contorno grosso: bairro escolhido</li>
+          </ul>
+          <p class="contagem" id="resumo-mapa"></p>
+          <p class="nota">Na simulação, a chuva de cada município em volta da capital varia um pouco em torno do valor do controle, como numa chuva de verdade. Contornos: IBGE (municípios) e GeoSampa, da Prefeitura (bairros da capital).</p>
+        </div>
+      </div>
+    </section>
+    <section class="secao secao-larga" id="bairros" aria-labelledby="titulo-bairros">
+      <div class="container secao-grade">
+        <h2 id="titulo-bairros">Bairros</h2>
+        <div class="secao-corpo">
+          <div class="filtros" role="group" aria-label="Filtros dos bairros">
+            <div class="campo">
+              <label for="filtro-regiao">Região</label>
+              <select id="filtro-regiao">
+                <option value="todas">Todas</option>
+                <option value="Centro">Centro</option>
+                <option value="Norte">Zona Norte</option>
+                <option value="Leste">Zona Leste</option>
+                <option value="Oeste">Zona Oeste</option>
+                <option value="Sul">Zona Sul</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="filtro-risco">Risco do bairro</label>
+              <select id="filtro-risco">
+                <option value="todos">Todos</option>
+                <option value="3">Alto</option>
+                <option value="2">Médio</option>
+                <option value="1">Baixo</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="filtro-nivel">Nível de alerta agora</label>
+              <select id="filtro-nivel">
+                <option value="todos">Todos</option>
+                <option value="verde">Verde</option>
+                <option value="amarelo">Amarelo</option>
+                <option value="laranja">Laranja</option>
+                <option value="vermelho">Vermelho</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="filtro-ordem">Ordenar por</label>
+              <select id="filtro-ordem">
+                <option value="nome">Nome</option>
+                <option value="alerta">Alerta mais grave</option>
+                <option value="risco">Maior risco</option>
+                <option value="moradores">Mais moradores</option>
+              </select>
+            </div>
+          </div>
+          <p class="contagem" id="contagem-bairros" role="status"></p>
+          <div id="lista-bairros"></div>
+        </div>
+      </div>
+    </section>
+    <section class="secao" id="regras" aria-labelledby="titulo-regras">
+      <div class="container secao-grade">
+        <h2 id="titulo-regras">Como calculamos</h2>
+        <div class="secao-corpo">
+          <p>As regras são as mesmas para todos os bairros e estão abertas aqui.</p>
+          <details class="recolhivel">
+            <summary>Ver as regras do alerta</summary>
+            <div class="recolhivel-corpo">
+              <h3>1. A chuva define o nível (faixas do INMET)</h3>
+              <div class="tabela-rolagem">
+                <table>
+                  <caption>Nível pela chuva prevista</caption>
+                  <thead>
+                    <tr><th scope="col">Nível</th><th scope="col">Chuva por hora</th><th scope="col">Chuva no dia</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row" class="nivel nivel-verde">Verde</th><td>menos de 20 mm/h</td><td>menos de 50 mm</td></tr>
+                    <tr><th scope="row" class="nivel nivel-amarelo">Amarelo</th><td>de 20 até menos de 30 mm/h</td><td>não define (só a chuva por hora)</td></tr>
+                    <tr><th scope="row" class="nivel nivel-laranja">Laranja</th><td>de 30 a 60 mm/h</td><td>de 50 a 100 mm</td></tr>
+                    <tr><th scope="row" class="nivel nivel-vermelho">Vermelho</th><td>mais de 60 mm/h</td><td>mais de 100 mm</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>No limite exato (30 mm/h ou 50 mm no dia) vale o nível mais alto. Se a chuva por hora e a do dia apontarem níveis diferentes, vale o maior.</p>
+
+              <h3>2. O risco do bairro ajusta o nível</h3>
+              <ul>
+                <li><strong>Risco alto:</strong> sobe um nível.</li>
+                <li><strong>Risco médio:</strong> fica igual.</li>
+                <li><strong>Risco baixo:</strong> desce um nível, nunca abaixo de verde.</li>
+                <li>Sem chuva forte (verde), o nível não muda: não existe alerta sem chuva.</li>
+              </ul>
+              <p>O risco de cada bairro vem de duas bases da Prefeitura, no GeoSampa: as áreas de risco de alagamento e inundação mapeadas (com grau de R1 a R4 e o número de moradias) e as ocorrências de alagamento e inundação registradas em 2026.</p>
+              <ul>
+                <li><strong>Alto:</strong> pelo menos 300 moradias em áreas de risco alto ou muito alto (R3 ou R4), ou pelo menos 10 ocorrências em 2026.</li>
+                <li><strong>Médio:</strong> alguma área de risco mapeada ou alguma ocorrência em 2026.</li>
+                <li><strong>Baixo:</strong> nenhuma área de risco mapeada e nenhuma ocorrência em 2026. Não quer dizer que nunca alague.</li>
+              </ul>
+              <p>Pela regra, 33 bairros têm risco alto, 54 médio e 9 baixo. Alguns cards trazem também notícias de alagamentos, com a fonte.</p>
+              <p>No mapa, a cor dos municípios em volta da capital usa só a chuva: o risco foi levantado apenas para os bairros da capital.</p>
+
+              <h3>3. Por dentro</h3>
+              <p>A previsão vem da Open-Meteo, um serviço gratuito de dados do tempo. As faixas de alerta são as do INMET. Os bairros, o risco e os pontos de apoio vêm do GeoSampa, da Prefeitura; os contornos dos municípios, do IBGE. O site é feito só com HTML, CSS e JavaScript.</p>
+              <p class="aviso">O ponto de apoio de cada bairro é o Centro Esportivo da Prefeitura mais perto do centro do bairro, em linha reta. Não é abrigo oficial e a capacidade não é conhecida. Antes de sair, confirme com a Defesa Civil (199).</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="container rodape-grade">
+      <div>
+        <p class="rodape-titulo">Clima Safe · 2026</p>
+        <p>Protótipo do grupo QuickStart para a Global Solution CitizenTech (FIAP). Não substitui os alertas oficiais da Defesa Civil (199 e SMS 40199) nem dos Bombeiros (193).</p>
+      </div>
+      <nav aria-label="Rodapé">
+        <p class="rodape-titulo">Páginas</p>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="solucao.html">Solução</a></li>
+          <li><a href="impacto.html">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="rodape-titulo">Fontes dos dados</p>
+        <ul>
+          <li><a href="https://open-meteo.com/">Open-Meteo: previsão de chuva</a></li>
+          <li><a href="https://www.cnnbrasil.com.br/nacional/chuva-entenda-os-alertas-do-inmet-para-temporais/">INMET: faixas de alerta de chuva (resumo da CNN Brasil)</a></li>
+          <li><a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/21565-em-2010-brasil-tinha-8-3-milhoes-de-pessoas-morando-em-areas-com-risco-de-desastres-naturais.html">IBGE e CEMADEN: população em áreas de risco</a></li>
+          <li><a href="https://geosampa.prefeitura.sp.gov.br/">GeoSampa (Prefeitura de SP): bairros, áreas de risco, ocorrências e centros esportivos</a></li>
+          <li><a href="https://servicodados.ibge.gov.br/api/docs">IBGE: municípios e contornos da Grande São Paulo</a></li>
+          <li><a href="https://prefeitura.sp.gov.br/web/subprefeituras/w/munic%C3%ADpio-de-s%C3%A3o-paulo-subprefeituras-e-distritos-municipais-1">Prefeitura de SP: Censo 2022 por distrito</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ Topo</a>
+
+  <script src="js/estado.js"></script>
+  <script src="js/dados.js"></script>
+  <script src="js/mapa-dados.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/mapa.js"></script>
+  <script src="js/simulacao.js"></script>
+  <script src="js/fonte.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/topo.js"></script>
+</body>
+</html>

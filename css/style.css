@@ -1,0 +1,610 @@
+/*
+  Clima Safe — folha de estilo única.
+  Ideia visual: um boletim de defesa civil. Papel quente, tinta escura, títulos com serifa,
+  réguas finas separando as seções. A cor só aparece onde carrega significado:
+  os quatro níveis de alerta (sempre acompanhados de texto) e os links.
+  Mobile first; media queries em 768px e 1024px.
+*/
+
+:root {
+  --papel: #f4f0e6;
+  --papel-claro: #fbf9f3;
+  --tinta: #1c2530;
+  --tinta-suave: #47525f;
+  --rio: #0f3d5c;
+  --link: #0b4f8a;
+  --regua: #b9b19c;
+  --foco: #0b4f8a;
+
+  --serifa: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --verde: #1e6b3a;
+  --amarelo: #f2c200;
+  --laranja: #b34d00;
+  --vermelho: #b3261e;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--tinta);
+  background: var(--papel);
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--link); text-underline-offset: 0.15em; }
+a:hover { text-decoration-thickness: 2px; }
+
+h1, h2, h3, h4 { font-family: var(--serifa); color: var(--tinta); line-height: 1.2; }
+h1 { margin: 0 0 1rem; font-size: clamp(2rem, 6vw, 3.25rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { margin: 0; font-size: 1.5rem; font-weight: 700; }
+h3 { margin: 1.5rem 0 0.4rem; font-size: 1.2rem; font-weight: 700; }
+h4 { margin: 0 0 0.3rem; font-family: var(--sans); font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; }
+p { margin: 0 0 0.9rem; }
+ul, ol { margin: 0 0 1rem; padding-left: 1.2rem; }
+
+:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+
+.container { width: 100%; max-width: 70rem; margin: 0 auto; padding: 0 1.25rem; }
+
+.pular-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -4rem;
+  z-index: 10;
+  padding: 0.6rem 1rem;
+  color: #fff;
+  background: var(--tinta);
+}
+.pular-link:focus { top: 0.5rem; outline-color: var(--amarelo); }
+
+/* ---------- Faixa de emergência e cabeçalho ---------- */
+.faixa-emergencia { background: var(--tinta); color: var(--papel); font-size: 0.9rem; }
+.faixa-grade { display: flex; flex-direction: column; align-items: center; gap: 0 1rem; text-align: center; }
+.faixa-emergencia p { margin: 0; padding: 0.4rem 0; }
+.faixa-emergencia a { color: #fff; font-weight: 700; }
+.faixa-emergencia :focus-visible { outline-color: var(--amarelo); }
+
+.cabecalho { background: var(--papel); border-bottom: 2px solid var(--tinta); }
+.cabecalho-grade {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.25rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--tinta);
+  font-family: var(--serifa);
+  font-size: 1.45rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.logo img { width: 40px; height: 40px; }
+
+.botao-menu {
+  display: none;
+  font: inherit;
+  font-weight: 700;
+  color: var(--tinta);
+  background: transparent;
+  border: 2px solid var(--tinta);
+  border-radius: 2px;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+}
+.js .botao-menu { display: inline-block; }
+
+.navegacao { width: 100%; }
+.menu { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.js .menu { display: none; }
+.js .menu.aberto { display: flex; }
+
+.menu li { border-top: 1px solid var(--regua); }
+.menu a {
+  display: block;
+  padding: 0.6rem 0;
+  color: var(--tinta);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.menu a:hover { border-bottom-color: var(--regua); }
+.menu a[aria-current="page"] { font-weight: 700; border-bottom-color: var(--rio); }
+
+/* ---------- Abertura das páginas ---------- */
+.topo-pagina { padding: 2.25rem 0 1.75rem; }
+.sobretitulo {
+  margin: 0 0 0.6rem;
+  color: var(--rio);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.lead { max-width: 40rem; margin: 0 0 1rem; font-size: 1.2rem; }
+
+.hero-grade { display: grid; gap: 1.5rem; }
+.hero-imagem { width: 100%; max-width: 15rem; }
+.acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin: 1.5rem 0 0; }
+.link-seco { font-weight: 600; }
+
+.indice { margin-top: 1.5rem; padding-top: 0.75rem; border-top: 1px solid var(--regua); }
+.indice ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+.indice a { font-weight: 600; }
+
+/* ---------- Seções: título à esquerda, conteúdo à direita ---------- */
+.secao { padding: 1.75rem 0 2.25rem; border-top: 1px solid var(--tinta); }
+.secao-grade { display: grid; gap: 1rem; }
+.secao-grade > * { min-width: 0; }   /* deixa tabelas largas rolarem dentro da caixa, sem alargar a página */
+.secao-corpo > :last-child { margin-bottom: 0; }
+.secao-corpo p, .secao-corpo ul:not(.indicadores):not(.grade-bairros):not(.integrantes) { max-width: 42rem; }
+
+/* ---------- Números: linhas de livro-caixa ---------- */
+.indicadores { list-style: none; margin: 0; padding: 0; }
+.estatistica { display: grid; gap: 0.25rem; padding: 1rem 0; border-top: 1px solid var(--regua); }
+.estatistica:first-child { border-top: 0; padding-top: 0; }
+.estatistica p { margin: 0 0 0.25rem; }
+.numero {
+  color: var(--rio);
+  font-family: var(--serifa);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.fonte { color: var(--tinta-suave); font-size: 0.88rem; overflow-wrap: anywhere; }
+
+/* ---------- Passos, ODS, ecossistema ---------- */
+.passos { list-style: none; counter-reset: passo; margin: 0 0 1rem; padding: 0; }
+.passos li {
+  counter-increment: passo;
+  display: grid;
+  grid-template-columns: 3.25rem 1fr;
+  column-gap: 0.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--regua);
+}
+.passos li:first-child { border-top: 0; padding-top: 0; }
+.passos li::before {
+  content: counter(passo);
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  color: var(--rio);
+  font-family: var(--serifa);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.passos h3 { grid-column: 2; margin: 0 0 0.25rem; }
+.passos p { grid-column: 2; margin: 0; }
+
+.lista-ods { list-style: none; margin: 0 0 1rem; padding: 0; }
+.lista-ods li {
+  display: grid;
+  grid-template-columns: 4.75rem 1fr;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--regua);
+}
+.lista-ods li:first-child { border-top: 0; padding-top: 0; }
+.lista-ods h3 { margin: 0 0 0.2rem; }
+.lista-ods p { margin: 0; }
+.etiqueta-ods {
+  align-self: start;
+  padding: 0.1rem 0.4rem;
+  border: 2px solid var(--tinta);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.ecossistema { list-style: none; margin: 0; padding: 0; }
+.ecossistema li { padding: 0.85rem 0; border-top: 1px solid var(--regua); }
+.ecossistema li:first-child { border-top: 0; padding-top: 0; }
+.ecossistema h3 { margin: 0 0 0.15rem; font-size: 1.1rem; }
+.ecossistema p { margin: 0; }
+
+.lista-simples { margin-bottom: 0; }
+
+/* ---------- Níveis de alerta (cor sempre junto com texto) ---------- */
+.alerta-verde { --n-cor: var(--verde); --n-texto: #fff; --n-fundo: #e7f1e8; }
+.alerta-amarelo { --n-cor: var(--amarelo); --n-texto: var(--tinta); --n-fundo: #fbf3cf; }
+.alerta-laranja { --n-cor: var(--laranja); --n-texto: #fff; --n-fundo: #f9e6d3; }
+.alerta-vermelho { --n-cor: var(--vermelho); --n-texto: #fff; --n-fundo: #f8dedb; }
+.alerta-indisponivel { --n-cor: #56616e; --n-texto: #fff; --n-fundo: #e8e6df; }
+
+.selo {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.2rem 0.65rem;
+  color: var(--n-texto, #fff);
+  background: var(--n-cor, var(--tinta-suave));
+  border-radius: 2px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+/* ---------- Simulador ---------- */
+.simulador { display: grid; gap: 1.25rem; }
+
+.controles {
+  display: grid;
+  gap: 1.1rem;
+  padding: 1.1rem;
+  background: var(--papel-claro);
+  border: 1px solid var(--tinta);
+}
+.campo { display: flex; flex-direction: column; gap: 0.35rem; }
+.campo label, .campo legend { font-weight: 600; }
+
+select, input[type="text"], input[type="email"], input[type="tel"] {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+  color: var(--tinta);
+  background: #fff;
+  border: 1.5px solid var(--tinta);
+  border-radius: 2px;
+}
+
+.valor-chuva { font-family: var(--serifa); font-weight: 700; color: var(--rio); }
+
+/* A barra do controle mostra os limites do INMET por hora (0–20–30–60–100 mm/h). */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2rem;
+  margin: 0;
+  background: transparent;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 0.75rem;
+  border: 1px solid var(--tinta);
+  background: linear-gradient(to right,
+    var(--verde) 0 20%, var(--amarelo) 20% 30%, var(--laranja) 30% 60%, var(--vermelho) 60% 100%);
+}
+input[type="range"]::-moz-range-track {
+  height: 0.75rem;
+  border: 1px solid var(--tinta);
+  background: linear-gradient(to right,
+    var(--verde) 0 20%, var(--amarelo) 20% 30%, var(--laranja) 30% 60%, var(--vermelho) 60% 100%);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0.9rem;
+  height: 1.9rem;
+  margin-top: -0.7rem;
+  background: var(--tinta);
+  border: 2px solid #fff;
+  border-radius: 2px;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 0.9rem;
+  height: 1.9rem;
+  background: var(--tinta);
+  border: 2px solid #fff;
+  border-radius: 2px;
+}
+
+.escala { position: relative; height: 1.3rem; color: var(--tinta-suave); font-size: 0.8rem; }
+.escala span { position: absolute; top: 0; transform: translateX(-50%); }
+.escala .e0 { left: 0; transform: none; }
+.escala .e20 { left: 20%; }
+.escala .e30 { left: 30%; }
+.escala .e60 { left: 60%; }
+.escala .e100 { right: 0; left: auto; transform: none; }
+
+.nota { margin: 0; color: var(--tinta-suave); font-size: 0.85rem; }
+
+.status { min-height: 1.4rem; margin: 0; color: var(--tinta-suave); font-size: 0.95rem; }
+.status.erro {
+  padding: 0.5rem 0.7rem;
+  color: #7a1009;
+  background: #f8dedb;
+  border-left: 4px solid var(--vermelho);
+}
+
+.painel {
+  min-height: 12rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--n-fundo, var(--papel-claro));
+  border: 1px solid var(--regua);
+  border-left: 8px solid var(--n-cor, var(--regua));
+}
+.painel h3 { margin: 0 0 0.6rem; }
+
+.lista-dados { margin: 0.75rem 0; }
+.lista-dados dt {
+  color: var(--tinta-suave);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.lista-dados dd { margin: 0 0 0.6rem; }
+
+.recomendacao { margin: 0.75rem 0; padding: 0.65rem 0.85rem; background: #fff; border: 1px solid var(--regua); }
+.caixa-abrigo { margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--regua); }
+.caixa-abrigo p { margin: 0 0 0.3rem; }
+
+.aviso { padding: 0.1rem 0 0.1rem 0.75rem; border-left: 3px solid var(--tinta); font-size: 0.92rem; }
+
+/* ---------- Bairros ---------- */
+.filtro { max-width: 22rem; margin-bottom: 0.75rem; }
+.contagem { margin: 0 0 1rem; color: var(--tinta-suave); }
+
+.grade-bairros { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1rem 1.1rem;
+  background: var(--papel-claro);
+  border: 1px solid var(--regua);
+  border-top: 5px solid var(--regua);
+  border-radius: 2px;
+}
+.card:has(.alerta-verde) { border-top-color: var(--verde); }
+.card:has(.alerta-amarelo) { border-top-color: var(--amarelo); }
+.card:has(.alerta-laranja) { border-top-color: var(--laranja); }
+.card:has(.alerta-vermelho) { border-top-color: var(--vermelho); }
+.card.selecionado { box-shadow: 0 0 0 2px var(--tinta); }
+.card h4 { margin: 0; font-family: var(--serifa); font-size: 1.15rem; letter-spacing: 0; text-transform: none; }
+.regiao-bairro { margin: 0; color: var(--tinta-suave); font-size: 0.88rem; }
+.card .historico { margin: 0; font-size: 0.95rem; }
+.card .lista-dados { margin: 0.25rem 0; }
+.card .botao { align-self: flex-start; margin-top: auto; }
+.fontes-card { margin: 0; color: var(--tinta-suave); font-size: 0.85rem; overflow-wrap: anywhere; }
+
+/* ---------- Botões ---------- */
+.botao {
+  display: inline-block;
+  padding: 0.65rem 1.2rem;
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  background: var(--rio);
+  border: 2px solid var(--rio);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.botao:hover { background: var(--tinta); border-color: var(--tinta); }
+.botao[disabled] { opacity: 0.6; cursor: wait; }
+.botao-secundario { color: var(--rio); background: transparent; }
+.botao-secundario:hover { color: #fff; background: var(--rio); border-color: var(--rio); }
+
+/* ---------- Tabelas ---------- */
+.tabela-rolagem { margin-bottom: 1rem; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+caption { padding-bottom: 0.4rem; font-weight: 700; text-align: left; }
+th, td { padding: 0.6rem 0.7rem 0.6rem 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--regua); }
+thead th { border-bottom: 2px solid var(--tinta); }
+.nivel::before {
+  content: "";
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 0.5rem;
+  vertical-align: -0.05em;
+  background: var(--tinta-suave);
+}
+.nivel-verde::before { background: var(--verde); }
+.nivel-amarelo::before { background: var(--amarelo); }
+.nivel-laranja::before { background: var(--laranja); }
+.nivel-vermelho::before { background: var(--vermelho); }
+
+/* ---------- Equipe e formulário ---------- */
+.integrantes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1.25rem; }
+.integrante img { width: 100%; max-width: 11rem; margin-bottom: 0.6rem; border: 1px solid var(--regua); }
+.integrante h3 { margin: 0 0 0.2rem; font-size: 1.05rem; }
+.integrante p { margin: 0; color: var(--tinta-suave); font-size: 0.95rem; }
+
+.formulario { display: grid; gap: 1.1rem; max-width: 34rem; }
+fieldset { margin: 0; padding: 0.6rem 0.9rem 0.8rem; border: 1.5px solid var(--tinta); border-radius: 2px; }
+legend { padding: 0 0.35rem; }
+.opcao { display: flex; align-items: center; gap: 0.5rem; padding: 0.15rem 0; }
+.opcao input { width: 1.2rem; height: 1.2rem; accent-color: var(--rio); }
+.opcao label { font-weight: 400; }
+.erro-campo { color: #8a1008; font-size: 0.92rem; font-weight: 600; }
+.erro-campo:empty { display: none; }
+.erro-campo:not(:empty) { padding-left: 0.5rem; border-left: 3px solid var(--vermelho); }
+[aria-invalid="true"] { border-color: var(--vermelho); border-width: 2px; }
+.mensagem-sucesso:empty { display: none; }
+.mensagem-sucesso:not(:empty) {
+  max-width: 34rem;
+  margin-bottom: 1rem;
+  padding: 0.7rem 0.9rem;
+  color: #12391f;
+  font-weight: 600;
+  background: #e7f1e8;
+  border-left: 6px solid var(--verde);
+}
+
+/* ---------- Rodapé ---------- */
+.rodape { padding: 2rem 0; color: var(--papel); background: var(--tinta); font-size: 0.95rem; }
+.rodape-grade { display: grid; gap: 1.5rem; }
+.rodape p { margin: 0 0 0.5rem; }
+.rodape ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.rodape a { color: #fff; }
+.rodape :focus-visible { outline-color: var(--amarelo); }
+.rodape-titulo { color: #d8d1bf; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- Tablet: 768px ---------- */
+@media (min-width: 768px) {
+  .topo-pagina { padding: 3.25rem 0 2.25rem; }
+
+  .botao-menu, .js .botao-menu { display: none; }
+  .navegacao { width: auto; }
+  .menu, .js .menu { display: flex; flex-direction: row; gap: 1.5rem; }
+  .menu li { border-top: 0; }
+  .menu a { padding: 0.5rem 0; }
+
+  .hero-grade { grid-template-columns: 1.35fr 0.65fr; align-items: end; gap: 2.5rem; }
+  .hero-imagem { max-width: 19rem; justify-self: end; }
+
+  .secao { padding: 2.25rem 0 2.75rem; }
+  .secao-grade { grid-template-columns: 13.5rem 1fr; gap: 2.5rem; }
+
+  .estatistica { grid-template-columns: 14rem 1fr; gap: 1.5rem; align-items: baseline; }
+  .ecossistema li { display: grid; grid-template-columns: 13rem 1fr; gap: 1.5rem; align-items: baseline; }
+  .ecossistema h3 { font-size: 1.15rem; }
+
+  .integrantes { grid-template-columns: repeat(3, 1fr); }
+  .rodape-grade { grid-template-columns: 1.4fr 0.7fr 1.5fr; gap: 2.5rem; }
+}
+
+/* ---------- Desktop: 1024px ---------- */
+@media (min-width: 1024px) {
+  .container { padding: 0 2rem; }
+  .simulador { grid-template-columns: 21rem 1fr; align-items: start; }
+}
+
+/* ---------- Tamanho do texto (botões A− e A+) ---------- */
+html.fonte-pequena { font-size: 90%; }
+html.fonte-normal { font-size: 100%; }
+html.fonte-grande { font-size: 115%; }
+html.fonte-maior { font-size: 130%; }
+
+.ajuste-fonte { display: flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0; }
+.ajuste-fonte span { font-size: 0.85rem; }
+.ajuste-fonte button {
+  min-width: 2.4rem;
+  padding: 0.15rem 0.5rem;
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: transparent;
+  border: 1px solid var(--papel);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.ajuste-fonte button:hover { color: var(--tinta); background: var(--papel); }
+.ajuste-fonte button:disabled { opacity: 0.45; cursor: not-allowed; }
+.ajuste-fonte button:disabled:hover { color: #fff; background: transparent; }
+
+/* ---------- Mapa da Grande São Paulo (SVG) ---------- */
+.mapa-ferramentas { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.mapa-ferramentas .botao { padding: 0.4rem 0.8rem; }
+.botao-zoom { min-width: 2.6rem; font-size: 1.2rem; line-height: 1.1; }
+.nivel-zoom { margin-left: 0.25rem; color: var(--tinta-suave); font-size: 0.9rem; }
+.pular-mapa { position: absolute; left: -999rem; }
+.pular-mapa:focus { position: static; }
+.mapa-caixa { background: #ece8dc; border: 1px solid var(--tinta); }
+#mapa-svg { display: block; width: 100%; height: auto; user-select: none; }
+#mapa-svg.ampliado { cursor: grab; touch-action: none; }   /* ampliado, o dedo move o mapa, não a página */
+#mapa-svg.ampliado:active { cursor: grabbing; }
+
+/* O JavaScript só escolhe a classe mapa-alerta-<nível>; as cores ficam aqui. */
+.mapa-municipio { fill-opacity: 0.88; stroke: var(--tinta); stroke-width: 0.8; vector-effect: non-scaling-stroke; cursor: pointer; }
+.mapa-municipio:hover { fill-opacity: 1; }
+.mapa-municipio:focus { outline: none; fill-opacity: 1; stroke-width: 3; }
+.mapa-fundo-capital { fill: #ece8dc; stroke: none; }   /* mesma cor do fundo do mapa */
+.mapa-bairro { fill-opacity: 0.9; stroke: #f4f0e6; stroke-width: 0.6; vector-effect: non-scaling-stroke; cursor: pointer; }
+.mapa-bairro:hover { fill-opacity: 1; stroke: var(--tinta); stroke-width: 1.5; }
+.mapa-bairro.escolhido { fill-opacity: 1; stroke: var(--tinta); stroke-width: 3.5; }
+.mapa-borda-capital { fill: none; stroke: var(--tinta); stroke-width: 1.6; vector-effect: non-scaling-stroke; pointer-events: none; }
+.mapa-alerta-verde { fill: var(--verde); }
+.mapa-alerta-amarelo { fill: var(--amarelo); }
+.mapa-alerta-laranja { fill: var(--laranja); }
+.mapa-alerta-vermelho { fill: var(--vermelho); }
+.mapa-alerta-indisponivel { fill: #8a929b; }
+.etiqueta-mapa { pointer-events: none; }
+.etiqueta-mapa rect { fill: var(--tinta); stroke: var(--papel); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.etiqueta-mapa text { font-family: var(--sans); fill: var(--papel); }
+.etiqueta-mapa .etiqueta-nome { font-weight: 700; fill: #fff; }
+.mapa-bairro:focus { outline: none; stroke: var(--tinta); stroke-width: 3.5; }
+
+.info-mapa { margin: 0.75rem 0 0; padding: 0.9rem 1rem; background: var(--papel-claro); border: 1px solid var(--regua); border-left: 4px solid var(--tinta); }
+.info-mapa p { margin: 0; }
+.info-titulo { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.75rem; margin-bottom: 0.75rem; }
+.info-titulo h3 { margin: 0; }
+.info-dados { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.6rem 1rem; margin: 0 0 0.75rem; }
+.info-dados dt { color: var(--tinta-suave); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.info-dados dd { margin: 0; font-family: var(--serifa); font-size: 1.3rem; font-weight: 700; }
+.info-fazer { padding-top: 0.6rem; border-top: 1px solid var(--regua); }
+
+.legenda-mapa { list-style: none; margin: 0.75rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; font-size: 0.9rem; }
+.legenda-mapa li { display: flex; align-items: center; gap: 0.4rem; }
+.amostra { display: inline-block; width: 1rem; height: 1rem; border: 1px solid var(--tinta); }
+.amostra-verde { background: var(--verde); }
+.amostra-amarelo { background: var(--amarelo); }
+.amostra-laranja { background: var(--laranja); }
+.amostra-vermelho { background: var(--vermelho); }
+.amostra-indisponivel { background: #8a929b; }
+.amostra-escolhido { background: var(--papel-claro); border: 3px solid var(--tinta); }
+
+/* ---------- Bloco "Como calculamos" ---------- */
+.recolhivel { background: var(--papel-claro); border: 1px solid var(--regua); }
+.recolhivel summary { padding: 0.8rem 1rem; font-weight: 700; cursor: pointer; }
+.recolhivel[open] summary { border-bottom: 1px solid var(--regua); }
+.recolhivel-corpo { padding: 1rem; }
+.recolhivel-corpo h3:first-child { margin-top: 0; }
+
+/* ---------- Lista "Feito para o dia de chuva" e "Como o impacto cresce" ---------- */
+.lista-pontos { list-style: none; margin: 0; padding: 0; }
+.lista-pontos li { padding: 0.85rem 0; border-top: 1px solid var(--regua); }
+.lista-pontos li:first-child { border-top: 0; padding-top: 0; }
+.lista-pontos h3 { margin: 0 0 0.15rem; font-size: 1.1rem; }
+.lista-pontos p { margin: 0; }
+
+@media (min-width: 768px) {
+  .lista-pontos li { display: grid; grid-template-columns: 13rem 1fr; gap: 1.5rem; align-items: baseline; }
+}
+
+/* ---------- Seção larga (Bairros): título em cima e mais cards lado a lado ---------- */
+.secao-larga .container { max-width: 100rem; }
+
+/* ---------- Botão "Topo" (canto inferior esquerdo) ---------- */
+.voltar-topo {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 20;
+  padding: 0.55rem 0.9rem;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  background: var(--tinta);
+  border: 2px solid var(--papel);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(28, 37, 48, 0.35);
+}
+.voltar-topo:hover { background: var(--rio); }
+.voltar-topo:focus-visible { outline-color: var(--amarelo); }
+.voltar-topo.escondido { visibility: hidden; }
+
+@media (min-width: 768px) {
+  .faixa-grade { display: grid; grid-template-columns: 1fr auto 1fr; }
+  .faixa-grade p { grid-column: 2; }
+  .faixa-grade .ajuste-fonte { grid-column: 3; justify-self: end; }
+  .secao-larga .secao-grade { grid-template-columns: 1fr; gap: 1.25rem; }
+}
+
+/* ---------- Filtros e grupos por região (seção Bairros) ---------- */
+.filtros { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 0.75rem 1rem; max-width: 60rem; margin-bottom: 0.75rem; }
+.grupo-regiao { margin-top: 1.5rem; }
+.grupo-regiao h3 { margin: 0 0 0.75rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--tinta); }
+.contagem-regiao { margin-left: 0.4rem; color: var(--tinta-suave); font-family: var(--sans); font-size: 0.9rem; font-weight: 400; }
+.sem-resultado { padding: 1rem; background: var(--papel-claro); border: 1px solid var(--regua); }

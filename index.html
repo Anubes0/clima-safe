@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clima Safe — alerta de enchente em São Paulo</title>
+  <meta name="description" content="Clima Safe: aviso de enchente por bairro em São Paulo, com nível de alerta, o que fazer e onde buscar apoio.">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="topo">
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="faixa-emergencia">
+    <div class="container faixa-grade">
+      <p>Em emergência, ligue: <a href="tel:199">Defesa Civil 199</a> · <a href="tel:193">Bombeiros 193</a></p>
+      <div class="ajuste-fonte" role="group" aria-label="Tamanho do texto">
+        <span aria-hidden="true">Texto</span>
+        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A−</button>
+        <button type="button" id="fonte-maior" aria-label="Aumentar o texto">A+</button>
+      </div>
+    </div>
+  </div>
+  <header class="cabecalho">
+    <div class="container cabecalho-grade">
+      <a class="logo" href="index.html">
+        <img src="img/logo.svg" alt="" width="40" height="40">
+        <span>Clima Safe</span>
+      </a>
+      <button type="button" class="botao-menu" id="botao-menu" aria-expanded="false" aria-controls="menu-principal">Menu</button>
+      <nav class="navegacao" aria-label="Principal">
+        <ul class="menu" id="menu-principal">
+          <li><a href="index.html" aria-current="page">Início</a></li>
+          <li><a href="solucao.html">Solução</a></li>
+          <li><a href="impacto.html">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="topo-pagina hero" aria-labelledby="titulo-hero">
+      <div class="container hero-grade">
+        <div class="hero-texto">
+          <p class="sobretitulo">São Paulo · alerta de enchente por bairro</p>
+          <h1 id="titulo-hero">Vai chover forte no seu bairro?</h1>
+          <p class="lead">O Clima Safe junta a previsão de chuva com o risco de alagamento do seu bairro e responde de um jeito simples: se é hora de se preparar, o que fazer e para onde ir.</p>
+          <p class="acoes">
+            <a class="botao" href="solucao.html">Testar a simulação</a>
+            <a class="link-seco" href="#problema">Por que isso importa</a>
+          </p>
+        </div>
+        <img class="hero-imagem" src="img/hero.svg" alt="" width="360" height="400">
+      </div>
+    </section>
+    <section class="secao" aria-labelledby="titulo-cidadao">
+      <div class="container secao-grade">
+        <h2 id="titulo-cidadao">Para quem é</h2>
+        <div class="secao-corpo">
+          <p>Para pessoas que moram em bairros com alagamento recorrente e costumam descobrir o perigo quando a água já chegou, e não sabem para onde ir.</p>
+          <p>O Clima Safe dá esse aviso antes, em linguagem simples, para os 96 bairros (distritos) da cidade de São Paulo, e mostra a chuva prevista nos 39 municípios da Grande São Paulo.</p>
+        </div>
+      </div>
+    </section>
+    <section class="secao" id="problema" aria-labelledby="titulo-problema">
+      <div class="container secao-grade">
+        <h2 id="titulo-problema">O problema em números</h2>
+        <div class="secao-corpo">
+          <ul class="indicadores">
+            <li class="estatistica">
+              <span class="numero">8.270.127</span>
+              <div>
+                <p>pessoas viviam em áreas de risco de enchentes e deslizamentos no Brasil, em 872 municípios (dados de 2010).</p>
+                <p class="fonte">Fonte: IBGE e CEMADEN, <a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/21565-em-2010-brasil-tinha-8-3-milhoes-de-pessoas-morando-em-areas-com-risco-de-desastres-naturais.html">População em áreas de risco no Brasil</a> (2018), com base no Censo 2010.</p>
+              </div>
+            </li>
+            <li class="estatistica">
+              <span class="numero">674.329</span>
+              <div>
+                <p>pessoas em áreas de risco só no município de São Paulo, o 2º maior número do país (dados de 2010).</p>
+                <p class="fonte">Fonte: IBGE, divulgação de 28/06/2018 (<a href="https://www.ibge.gov.br/geociencias/informacoes-ambientais/estudos-ambientais/21538-populacao-em-areas-de-risco-no-brasil.html">página do estudo</a>).</p>
+              </div>
+            </li>
+            <li class="estatistica">
+              <span class="numero">21 mortes</span>
+              <div>
+                <p>registradas pela Defesa Civil de São Paulo entre dezembro de 2025 e 9 de março de 2026, em temporais.</p>
+                <p class="fonte">Fonte: Defesa Civil de SP, noticiado pelo Metrópoles.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="secao" aria-labelledby="titulo-como">
+      <div class="container secao-grade">
+        <h2 id="titulo-como">Como funciona</h2>
+        <div class="secao-corpo">
+          <ol class="passos">
+            <li>
+              <h3>Escolha o seu bairro</h3>
+              <p>Digite o nome ou clique no mapa: são os 96 bairros (distritos) da cidade de São Paulo.</p>
+            </li>
+            <li>
+              <h3>Veja a cor do alerta</h3>
+              <p>Verde, amarelo, laranja ou vermelho, de acordo com a chuva prevista e o risco de alagamento do bairro, mapeado pela Prefeitura.</p>
+            </li>
+            <li>
+              <h3>Saiba o que fazer</h3>
+              <p>Cada cor diz o que fazer e onde fica o ponto de apoio público mais próximo.</p>
+            </li>
+          </ol>
+          <p><a href="solucao.html#regras">Como calculamos o alerta</a></p>
+        </div>
+      </div>
+    </section>
+    <section class="secao" aria-labelledby="titulo-chuva">
+      <div class="container secao-grade">
+        <h2 id="titulo-chuva">Feito para o dia de chuva</h2>
+        <div class="secao-corpo">
+          <ul class="lista-pontos">
+            <li><h3>Funciona com pouca internet</h3><p>Sem conexão, o simulador continua calculando o alerta. A internet só é usada para buscar a previsão real.</p></li>
+            <li><h3>Fácil de ler</h3><p>Botões A− e A+ para o tamanho do texto, cores sempre acompanhadas de texto e uso completo pelo teclado.</p></li>
+            <li><h3>Soma com o alerta oficial</h3><p>O SMS 40199 da Defesa Civil avisa que vem chuva forte. O Clima Safe explica o que isso quer dizer para o seu bairro e para onde ir.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="secao" aria-labelledby="titulo-ods">
+      <div class="container secao-grade">
+        <h2 id="titulo-ods">Objetivos de Desenvolvimento Sustentável</h2>
+        <div class="secao-corpo">
+          <ul class="lista-ods">
+            <li>
+              <span class="etiqueta-ods">ODS 11</span>
+              <div>
+                <h3>Cidades e comunidades sustentáveis</h3>
+                <p>Menos gente pega de surpresa pela enchente: o aviso chega antes da chuva forte.</p>
+              </div>
+            </li>
+            <li>
+              <span class="etiqueta-ods">ODS 13</span>
+              <div>
+                <h3>Ação contra a mudança global do clima</h3>
+                <p>Ajuda o morador a se preparar para chuvas extremas, que estão ficando mais comuns.</p>
+              </div>
+            </li>
+          </ul>
+          <p><a href="impacto.html">Ver o impacto e os indicadores</a></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="container rodape-grade">
+      <div>
+        <p class="rodape-titulo">Clima Safe · 2026</p>
+        <p>Protótipo do grupo QuickStart para a Global Solution CitizenTech (FIAP). Não substitui os alertas oficiais da Defesa Civil (199 e SMS 40199) nem dos Bombeiros (193).</p>
+      </div>
+      <nav aria-label="Rodapé">
+        <p class="rodape-titulo">Páginas</p>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="solucao.html">Solução</a></li>
+          <li><a href="impacto.html">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="rodape-titulo">Fontes dos dados</p>
+        <ul>
+          <li><a href="https://open-meteo.com/">Open-Meteo: previsão de chuva</a></li>
+          <li><a href="https://www.cnnbrasil.com.br/nacional/chuva-entenda-os-alertas-do-inmet-para-temporais/">INMET: faixas de alerta de chuva (resumo da CNN Brasil)</a></li>
+          <li><a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/21565-em-2010-brasil-tinha-8-3-milhoes-de-pessoas-morando-em-areas-com-risco-de-desastres-naturais.html">IBGE e CEMADEN: população em áreas de risco</a></li>
+          <li><a href="https://geosampa.prefeitura.sp.gov.br/">GeoSampa (Prefeitura de SP): bairros, áreas de risco, ocorrências e centros esportivos</a></li>
+          <li><a href="https://servicodados.ibge.gov.br/api/docs">IBGE: municípios e contornos da Grande São Paulo</a></li>
+          <li><a href="https://prefeitura.sp.gov.br/web/subprefeituras/w/munic%C3%ADpio-de-s%C3%A3o-paulo-subprefeituras-e-distritos-municipais-1">Prefeitura de SP: Censo 2022 por distrito</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ Topo</a>
+
+  <script src="js/estado.js"></script>
+  <script src="js/fonte.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/topo.js"></script>
+</body>
+</html>

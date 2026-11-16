@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Impacto — Clima Safe</title>
+  <meta name="description" content="Indicadores, crescimento e contribuição do Clima Safe para os ODS 11 e 13.">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="topo">
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="faixa-emergencia">
+    <div class="container faixa-grade">
+      <p>Em emergência, ligue: <a href="tel:199">Defesa Civil 199</a> · <a href="tel:193">Bombeiros 193</a></p>
+      <div class="ajuste-fonte" role="group" aria-label="Tamanho do texto">
+        <span aria-hidden="true">Texto</span>
+        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A−</button>
+        <button type="button" id="fonte-maior" aria-label="Aumentar o texto">A+</button>
+      </div>
+    </div>
+  </div>
+  <header class="cabecalho">
+    <div class="container cabecalho-grade">
+      <a class="logo" href="index.html">
+        <img src="img/logo.svg" alt="" width="40" height="40">
+        <span>Clima Safe</span>
+      </a>
+      <button type="button" class="botao-menu" id="botao-menu" aria-expanded="false" aria-controls="menu-principal">Menu</button>
+      <nav class="navegacao" aria-label="Principal">
+        <ul class="menu" id="menu-principal">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="solucao.html">Solução</a></li>
+          <li><a href="impacto.html" aria-current="page">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="topo-pagina" aria-labelledby="titulo-impacto">
+      <div class="container">
+        <p class="sobretitulo">Impacto</p>
+        <h1 id="titulo-impacto">O que o Clima Safe muda</h1>
+        <p class="lead">Quem ganha é o morador que passa a saber da enchente antes dela chegar. Os números abaixo vêm da lista de bairros e do que foi feito no site.</p>
+      </div>
+    </section>
+    <section class="secao" aria-labelledby="titulo-indicadores">
+      <div class="container secao-grade">
+        <h2 id="titulo-indicadores">Como medimos</h2>
+        <div class="secao-corpo">
+          <ul class="indicadores" id="indicadores">
+            <li class="estatistica">
+              <span class="numero" id="ind-bairros">0</span>
+              <div><p>bairros monitorados (os distritos da capital)</p></div>
+            </li>
+            <li class="estatistica">
+              <span class="numero" id="ind-populacao">0</span>
+              <div>
+                <p>moradores nesses bairros</p>
+                <p class="fonte">Fonte: Prefeitura de SP, Censo 2022 por distrito.</p>
+              </div>
+            </li>
+            <li class="estatistica">
+              <span class="numero" id="ind-alta">0</span>
+              <div><p>bairros com risco alto</p></div>
+            </li>
+            <li class="estatistica">
+              <span class="numero" id="ind-cadastros">0</span>
+              <div><p>cadastros para receber alerta</p></div>
+            </li>
+            <li class="estatistica">
+              <span class="numero" id="ind-alertas">0</span>
+              <div><p>alertas emitidos</p></div>
+            </li>
+            <li class="estatistica">
+              <span class="numero" id="ind-antecedencia">sem dados</span>
+              <div>
+                <p>de antecedência média do alerta antes do pico da chuva</p>
+                <p class="fonte" id="ind-antecedencia-nota"></p>
+              </div>
+            </li>
+          </ul>
+          <h3>Cadastros por bairro</h3>
+          <ul class="lista-simples" id="lista-cadastros"></ul>
+        </div>
+      </div>
+    </section>
+    <section class="secao" aria-labelledby="titulo-cresce">
+      <div class="container secao-grade">
+        <h2 id="titulo-cresce">Como o impacto cresce</h2>
+        <div class="secao-corpo">
+          <ul class="lista-pontos">
+            <li><h3>Toda a Grande São Paulo</h3><p>Os 96 bairros da capital já têm risco calculado. O mapa mostra a chuva nos outros 38 municípios; o próximo passo é levantar as áreas de risco de cada um.</p></li>
+            <li><h3>Aviso de verdade</h3><p>Hoje o cadastro é um protótipo. Com um serviço de envio, ele passa a mandar o alerta por SMS ou e-mail.</p></li>
+            <li><h3>Dados oficiais em dia</h3><p>O risco usa as ocorrências registradas pela Prefeitura. Atualizando a base a cada temporada de chuva, o risco de cada bairro acompanha o que acontece de verdade.</p></li>
+            <li><h3>Quem não usa internet</h3><p>Associações de bairro levam o aviso por grupos de mensagens e cartazes.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="secao" aria-labelledby="titulo-ods-tab">
+      <div class="container secao-grade">
+        <h2 id="titulo-ods-tab">Contribuição para os ODS</h2>
+        <div class="secao-corpo">
+          <div class="tabela-rolagem">
+            <table>
+              <caption>ODS atendidos pelo projeto</caption>
+              <thead>
+                <tr><th scope="col">ODS</th><th scope="col">Meta relacionada</th><th scope="col">Como o projeto contribui</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">ODS 11: Cidades e comunidades sustentáveis</th>
+                  <td>11.5: reduzir mortes e pessoas afetadas por desastres, inclusive os ligados à água.</td>
+                  <td>Avisa o morador antes da chuva forte e indica o caminho até o ponto de apoio.</td>
+                </tr>
+                <tr>
+                  <th scope="row">ODS 13: Ação contra a mudança global do clima</th>
+                  <td>13.1: reforçar a resiliência e a capacidade de adaptação a riscos ligados ao clima.</td>
+                  <td>Usa dados do tempo para a comunidade se preparar antes do evento extremo.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="secao" aria-labelledby="titulo-ecossistema">
+      <div class="container secao-grade">
+        <h2 id="titulo-ecossistema">Quem faz parte</h2>
+        <div class="secao-corpo">
+          <ul class="ecossistema">
+            <li><h3>Morador</h3><p>Recebe o alerta do bairro e sabe o que fazer.</p></li>
+            <li><h3>Defesa Civil (199 e SMS 40199)</h3><p>Fonte oficial dos alertas e das orientações. O Clima Safe soma com ela, não a substitui.</p></li>
+            <li><h3>Prefeitura e CGE</h3><p>Dados públicos de risco, população e equipamentos.</p></li>
+            <li><h3>Associações de bairro</h3><p>Levam o aviso para quem não usa o site.</p></li>
+            <li><h3>Pontos de apoio</h3><p>Equipamentos públicos indicados como referência.</p></li>
+            <li><h3>Bombeiros (193)</h3><p>Em emergência com risco de vida, ligue 193.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="container rodape-grade">
+      <div>
+        <p class="rodape-titulo">Clima Safe · 2026</p>
+        <p>Protótipo do grupo QuickStart para a Global Solution CitizenTech (FIAP). Não substitui os alertas oficiais da Defesa Civil (199 e SMS 40199) nem dos Bombeiros (193).</p>
+      </div>
+      <nav aria-label="Rodapé">
+        <p class="rodape-titulo">Páginas</p>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="solucao.html">Solução</a></li>
+          <li><a href="impacto.html">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="rodape-titulo">Fontes dos dados</p>
+        <ul>
+          <li><a href="https://open-meteo.com/">Open-Meteo: previsão de chuva</a></li>
+          <li><a href="https://www.cnnbrasil.com.br/nacional/chuva-entenda-os-alertas-do-inmet-para-temporais/">INMET: faixas de alerta de chuva (resumo da CNN Brasil)</a></li>
+          <li><a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/21565-em-2010-brasil-tinha-8-3-milhoes-de-pessoas-morando-em-areas-com-risco-de-desastres-naturais.html">IBGE e CEMADEN: população em áreas de risco</a></li>
+          <li><a href="https://geosampa.prefeitura.sp.gov.br/">GeoSampa (Prefeitura de SP): bairros, áreas de risco, ocorrências e centros esportivos</a></li>
+          <li><a href="https://servicodados.ibge.gov.br/api/docs">IBGE: municípios e contornos da Grande São Paulo</a></li>
+          <li><a href="https://prefeitura.sp.gov.br/web/subprefeituras/w/munic%C3%ADpio-de-s%C3%A3o-paulo-subprefeituras-e-distritos-municipais-1">Prefeitura de SP: Censo 2022 por distrito</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ Topo</a>
+
+  <script src="js/estado.js"></script>
+  <script src="js/dados.js"></script>
+  <script src="js/impacto.js"></script>
+  <script src="js/fonte.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/topo.js"></script>
+</body>
+</html>
