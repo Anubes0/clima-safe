@@ -6,7 +6,7 @@ Grupo **QuickStart** · Global Solution 2026 · CitizenTech (FIAP)
 
 ## Descrição
 
-Quem mora em bairro de São Paulo que alaga costuma descobrir o problema quando a água já chegou, sem saber para onde ir. O Clima Safe cruza a previsão de chuva da Open-Meteo com o risco de alagamento dos 96 bairros (distritos oficiais) da cidade de São Paulo, calculado com dados da Prefeitura. Ele mostra o nível de alerta (verde, amarelo, laranja ou vermelho, pelas faixas do INMET), o que fazer e o ponto de apoio público mais próximo. O bairro pode ser escolhido pelo nome ou clicando no mapa interativo, que também mostra os 39 municípios da Grande São Paulo. O morador também pode se cadastrar para receber o alerta do seu bairro. O Clima Safe não substitui o alerta oficial da Defesa Civil (SMS 40199): explica o que a chuva prevista significa para o bairro e para onde ir. O projeto atende aos ODS 11 (Cidades e comunidades sustentáveis) e 13 (Ação contra a mudança global do clima).
+Quem mora em bairro de São Paulo que alaga costuma descobrir o problema quando a água já chegou, sem saber para onde ir. O Clima Safe cruza a previsão de chuva da Open-Meteo com o risco de alagamento dos 96 bairros (distritos oficiais) da cidade de São Paulo, calculado com dados da Prefeitura. Ele mostra o nível de alerta (verde, amarelo, laranja ou vermelho, pelas faixas do INMET), o que fazer e o ponto de apoio público mais próximo. O bairro pode ser achado pela localização do aparelho (com a permissão do usuário), pelo nome ou clicando no mapa interativo, que também mostra os 39 municípios da Grande São Paulo. O morador também pode se cadastrar para receber o alerta do seu bairro. O Clima Safe não substitui o alerta oficial da Defesa Civil (SMS 40199): explica o que a chuva prevista significa para o bairro e para onde ir. O projeto atende aos ODS 11 (Cidades e comunidades sustentáveis) e 13 (Ação contra a mudança global do clima).
 
 ## Como abrir e executar
 
@@ -19,7 +19,7 @@ Quem mora em bairro de São Paulo que alaga costuma descobrir o problema quando 
 | Página | Conteúdo |
 | --- | --- |
 | `index.html` | Cidadão, problema com dado real e fonte, como funciona, ODS |
-| `solucao.html` | Simulador (bairro, previsão real, chuva simulada), busca por nome, mapa da Grande São Paulo em SVG com zoom, cards dos 96 bairros separados por região, com filtros de região, risco e nível e ordenação, regras do cálculo |
+| `solucao.html` | Simulador (bairro, previsão real, chuva simulada), botão "Usar minha localização", busca por nome, mapa da Grande São Paulo em SVG com zoom, cards dos 96 bairros separados por região, com filtros de região, risco e nível e ordenação, regras do cálculo |
 | `impacto.html` | Indicadores, como o impacto cresce, contribuição para os ODS 11 e 13, ecossistema |
 | `equipe.html` | Integrantes e formulário de cadastro para alertas |
 
@@ -36,6 +36,7 @@ clima-safe/
 │   ├── dados.js         # array dos 96 bairros e dos 40 pontos de apoio (gerado das bases da Prefeitura)
 │   ├── api.js           # previsão da Open-Meteo (todos os lugares numa só chamada)
 │   ├── simulacao.js     # regra de alerta, painel e cards (página Solução)
+│   ├── localizacao.js   # "Usar minha localização": acha o bairro pelo contorno dos distritos
 │   ├── mapa-dados.js    # contornos: 39 municípios (IBGE) e 96 bairros da capital (GeoSampa)
 │   ├── mapa.js          # mapa em SVG
 │   ├── formulario.js    # validação do cadastro
@@ -68,7 +69,7 @@ Vem de duas bases da Prefeitura no GeoSampa: as 793 áreas de risco de alagament
 
 ## Tecnologias
 
-HTML5, CSS3 (flexbox, grid, media queries), JavaScript (DOM, eventos, `fetch` com `async`/`await`, `localStorage`) e SVG para o mapa. Sem frameworks nem bibliotecas. Dados: API Open-Meteo (previsão), IBGE (contornos dos municípios) e GeoSampa (bairros, risco e pontos de apoio), já copiados para `js/dados.js` e `js/mapa-dados.js`.
+HTML5, CSS3 (flexbox, grid, media queries), JavaScript (DOM, eventos, `fetch` com `async`/`await`, `localStorage`, Geolocation API) e SVG para o mapa. Sem frameworks nem bibliotecas. Dados: API Open-Meteo (previsão), IBGE (contornos dos municípios) e GeoSampa (bairros, risco e pontos de apoio), já copiados para `js/dados.js` e `js/mapa-dados.js`.
 
 ## Acessibilidade
 
@@ -115,6 +116,7 @@ Diário do Transporte (19/01/2024): https://diariodotransporte.com.br/2024/01/19
 - Os pontos de apoio são 40 Centros Esportivos da Prefeitura usados como referência. Não são abrigos oficiais confirmados e a capacidade não é conhecida. O de cada bairro é o mais próximo do centro do distrito em linha reta (até 27,8 km, em Marsilac). Só 10 têm telefone. O site orienta a confirmar com a Defesa Civil (199).
 - Os "bairros" são os 96 distritos oficiais da cidade. Bairros menores aparecem dentro do distrito (por exemplo, Belenzinho em Belém e Chácara Santo Antônio em Santo Amaro).
 - A previsão real busca 134 lugares (96 bairros e 38 municípios) numa só chamada; para a Open-Meteo, isso conta como 134 consultas.
+- A localização só é pedida quando a pessoa clica em "Usar minha localização", e o navegador pede a permissão. As coordenadas são usadas só na página, para achar o distrito (teste do ponto dentro do contorno do GeoSampa), e não são guardadas nem enviadas. Em computador sem GPS a posição pode errar por alguns quilômetros; nesse caso o site avisa para conferir o bairro. Fora da capital, o site mostra o município da Grande São Paulo no mapa.
 - Os indicadores de cadastros e alertas contam o que foi feito no site. Nenhum dado sai do computador: o site guarda só quantas pessoas se cadastraram em cada bairro.
 - Com o site aberto direto do arquivo, alguns navegadores (como o Firefox) não deixam as páginas dividirem o `localStorage`. Por isso o tamanho do texto e as contagens também passam de uma página para outra no endereço dos links (`impacto.html?fonte=2&cadastros=5:1...`).
 - A Open-Meteo gratuita tem limite de uso. Se a previsão real falhar ou demorar mais de 10 segundos, o site avisa e o simulador continua funcionando.

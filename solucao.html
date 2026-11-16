@@ -60,13 +60,27 @@
         <div class="secao-corpo">
           <div class="simulador">
             <div class="controles">
-              <div class="campo">
-                <label for="busca-bairro">Buscar bairro pelo nome</label>
-                <input type="search" id="busca-bairro" autocomplete="off" placeholder="Ex.: Penha, Sé, Jardim Helena" aria-describedby="aviso-busca">
-                <p class="nota" id="aviso-busca" role="status"></p>
-                <label for="select-bairro">Bairro</label>
-                <select id="select-bairro"></select>
-              </div>
+              <fieldset class="escolha-bairro">
+                <legend>Seu bairro</legend>
+                <div class="campo">
+                  <button type="button" class="botao botao-localizacao" id="btn-localizacao" aria-describedby="nota-localizacao">
+                    <svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                    <span id="texto-localizacao">Usar minha localização</span>
+                  </button>
+                  <p class="nota" id="nota-localizacao">O navegador vai pedir a sua permissão. A localização serve só para achar o bairro: não é guardada nem enviada.</p>
+                  <p class="status" id="status-localizacao" role="status"></p>
+                </div>
+                <p class="divisor" aria-hidden="true"><span>ou escolha</span></p>
+                <div class="campo">
+                  <label for="busca-bairro">Buscar pelo nome</label>
+                  <input type="search" id="busca-bairro" autocomplete="off" placeholder="Ex.: Penha, Sé, Jardim Helena" aria-describedby="aviso-busca">
+                  <p class="nota" id="aviso-busca" role="status"></p>
+                </div>
+                <div class="campo">
+                  <label for="select-bairro">Bairro</label>
+                  <select id="select-bairro"></select>
+                </div>
+              </fieldset>
               <div class="campo">
                 <label for="faixa-chuva">Simular chuva: <span class="valor-chuva" id="valor-chuva">0 mm/h</span></label>
                 <input type="range" id="faixa-chuva" min="0" max="100" step="1" value="0">
@@ -256,6 +270,7 @@
   <script src="js/api.js"></script>
   <script src="js/mapa.js"></script>
   <script src="js/simulacao.js"></script>
+  <script src="js/localizacao.js"></script>
   <script src="js/fonte.js"></script>
   <script src="js/menu.js"></script>
   <script src="js/topo.js"></script>
