@@ -57,7 +57,7 @@ clima-safe/
 │   ├── menu.js          # Menu para dispositivos móveis
 │   └── topo.js          # Botão "Topo", no canto inferior esquerdo
 └── img/
-    └── logo.svg, hero.svg, avatar-placeholder.svg
+    └── logo.svg, hero.svg
 ```
 
 ## Regra de alerta
@@ -136,13 +136,13 @@ O projeto não utiliza frameworks nem bibliotecas externas. As fontes de dados s
 
 ## Integrantes
 
-| Nome | RM |
-|---|---|
-| Mateus Bomfim Nascimento | A preencher |
-| Pedro Henrique da Silva Valandro | A preencher |
-| Lucas Paz dos Santos Lima | A preencher |
-| João Pedro Soares Rocha | A preencher |
-| Gabriel Rocha Freitas | A preencher |
+| Nome |
+|---|
+| Mateus Bomfim Nascimento |
+| Pedro Henrique da Silva Valandro |
+| Lucas Paz dos Santos Lima |
+| João Pedro Soares Rocha |
+| Gabriel Rocha Freitas |
 
 ## Pitch
 

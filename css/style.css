@@ -2004,15 +2004,6 @@ thead th { border-bottom: 2px solid var(--tinta); }
   text-align: center;
 }
 
-.integrante img {
-  width: 7rem;
-  height: 7rem;
-  margin-bottom: 0.75rem;
-  border: 3px solid var(--marca-clara);
-  border-radius: 50%;
-  object-fit: cover;
-}
-
 .integrante h3 {
   margin: 0 0 0.25rem;
   font-size: 1.05rem;
