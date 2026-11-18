@@ -1,5 +1,4 @@
-// topo.js — o botão "Topo" do canto inferior esquerdo aparece depois que a página desce um pouco.
-// Sem JavaScript ele fica sempre visível.
+// O botão "Topo" aparece depois de rolar a página.
 
 const botaoTopo = document.getElementById("voltar-topo");
 

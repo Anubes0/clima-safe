@@ -1,32 +1,35 @@
-// fonte.js — botões A− e A+ do topo: mudam o tamanho do texto do site todo.
-// O tamanho fica em estado.fonte (estado.js) e vale para todas as páginas.
-
-const TAMANHOS = ["fonte-pequena", "fonte-normal", "fonte-grande", "fonte-maior"];
+// Botões de leitura de todas as páginas: tamanho do texto (A- e A+) e alto contraste.
+// As classes do <html> são aplicadas por estado.js, já no <head>.
 
 const botaoMenor = document.getElementById("fonte-menor");
 const botaoMaior = document.getElementById("fonte-maior");
+const botaoContraste = document.getElementById("alto-contraste");
 
-function aplicarTamanho() {
-  for (const classe of TAMANHOS) {
-    document.documentElement.classList.remove(classe);
-  }
-  document.documentElement.classList.add(TAMANHOS[estado.fonte]);
-  // No limite, o botão fica desativado: é o aviso de que não dá para ir além
+function aplicarAjustes() {
+  aplicarClassesDeLeitura();   // estado.js
+  // No limite, o botão fica desativado
   botaoMenor.disabled = estado.fonte === 0;
   botaoMaior.disabled = estado.fonte === TAMANHOS.length - 1;
+  botaoContraste.setAttribute("aria-pressed", String(estado.contraste));
 }
 
 botaoMenor.addEventListener("click", function () {
   estado.fonte--;
   salvarEstado();
-  aplicarTamanho();
+  aplicarAjustes();
 });
 
 botaoMaior.addEventListener("click", function () {
   estado.fonte++;
   salvarEstado();
-  aplicarTamanho();
+  aplicarAjustes();
 });
 
-quandoEstadoMudar(aplicarTamanho);
-aplicarTamanho();
+botaoContraste.addEventListener("click", function () {
+  estado.contraste = !estado.contraste;
+  salvarEstado();
+  aplicarAjustes();
+});
+
+quandoEstadoMudar(aplicarAjustes);
+aplicarAjustes();

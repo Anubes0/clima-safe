@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Equipe e cadastro — Clima Safe</title>
-  <meta name="description" content="Equipe do Clima Safe e cadastro para receber o alerta do seu bairro.">
+  <title>Equipe — Clima Safe</title>
+  <meta name="description" content="Integrantes do grupo QuickStart, que fez o Clima Safe.">
   <link rel="icon" href="img/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/estado.js"></script>
 </head>
 <body id="topo">
   <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
   <div class="faixa-emergencia">
     <div class="container faixa-grade">
       <p>Em emergência, ligue: <a href="tel:199">Defesa Civil 199</a> · <a href="tel:193">Bombeiros 193</a></p>
-      <div class="ajuste-fonte" role="group" aria-label="Tamanho do texto">
+      <div class="ajuste-fonte" role="group" aria-label="Ajustes de leitura">
         <span aria-hidden="true">Texto</span>
-        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A−</button>
+        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A-</button>
         <button type="button" id="fonte-maior" aria-label="Aumentar o texto">A+</button>
+        <button type="button" id="alto-contraste" aria-pressed="false">Alto contraste</button>
       </div>
     </div>
   </div>
@@ -31,8 +33,10 @@
         <ul class="menu" id="menu-principal">
           <li><a href="index.html">Início</a></li>
           <li><a href="solucao.html">Solução</a></li>
+          <li><a href="simulador.html">Simulador</a></li>
           <li><a href="impacto.html">Impacto</a></li>
           <li><a href="equipe.html" aria-current="page">Equipe</a></li>
+          <li class="menu-cta"><a href="cadastro.html">Cadastro</a></li>
         </ul>
       </nav>
     </div>
@@ -43,10 +47,10 @@
       <div class="container">
         <p class="sobretitulo">Equipe</p>
         <h1 id="titulo-equipe">Quem fez o Clima Safe</h1>
-        <p class="lead">Grupo QuickStart. Projeto da Global Solution CitizenTech (FIAP).</p>
+        <p class="lead">Grupo QuickStart. Projeto da Global Solution CitizenTech (FIAP), 2026.</p>
       </div>
     </section>
-    <section class="secao" aria-labelledby="titulo-integrantes">
+    <section class="secao secao-larga" aria-labelledby="titulo-integrantes">
       <div class="container secao-grade">
         <h2 id="titulo-integrantes">Integrantes</h2>
         <div class="secao-corpo">
@@ -85,66 +89,18 @@
         </div>
       </div>
     </section>
-    <section class="secao" id="cadastro" aria-labelledby="titulo-cadastro">
+    <section class="secao" aria-labelledby="titulo-projeto">
       <div class="container secao-grade">
-        <h2 id="titulo-cadastro">Receba o alerta do seu bairro</h2>
+        <h2 id="titulo-projeto">Sobre o projeto</h2>
         <div class="secao-corpo">
-          <p class="aviso">Protótipo: nenhum dado é enviado. O site conta só quantas pessoas se cadastraram em cada bairro, sem nome, e-mail ou telefone.</p>
-
-          <p class="mensagem-sucesso" id="mensagem-sucesso" role="status"></p>
-
-          <form class="formulario" id="form-cadastro" novalidate>
-            <div class="campo">
-              <label for="nome">Nome</label>
-              <input type="text" id="nome" name="nome" autocomplete="name" aria-describedby="erro-nome">
-              <span class="erro-campo" id="erro-nome"></span>
-            </div>
-            <div class="campo">
-              <label for="email">E-mail</label>
-              <input type="email" id="email" name="email" autocomplete="email" aria-describedby="erro-email">
-              <span class="erro-campo" id="erro-email"></span>
-            </div>
-            <div class="campo">
-              <label for="telefone">Telefone (opcional, só números com DDD)</label>
-              <input type="tel" id="telefone" name="telefone" autocomplete="tel" inputmode="numeric" aria-describedby="erro-telefone">
-              <span class="erro-campo" id="erro-telefone"></span>
-            </div>
-            <div class="campo">
-              <label for="bairro">Bairro</label>
-              <select id="bairro" name="bairro" aria-describedby="erro-bairro">
-                <option value="">Escolha seu bairro</option>
-              </select>
-              <span class="erro-campo" id="erro-bairro"></span>
-            </div>
-            <div class="campo">
-              <fieldset id="grupo-canal" aria-describedby="erro-canal">
-                <legend>Como prefere receber o alerta</legend>
-                <div class="opcao">
-                  <input type="radio" id="canal-email" name="canal" value="email">
-                  <label for="canal-email">E-mail</label>
-                </div>
-                <div class="opcao">
-                  <input type="radio" id="canal-sms" name="canal" value="sms">
-                  <label for="canal-sms">SMS</label>
-                </div>
-              </fieldset>
-              <span class="erro-campo" id="erro-canal"></span>
-            </div>
-            <div class="campo">
-              <div class="opcao">
-                <input type="checkbox" id="aceite" name="aceite" aria-describedby="erro-aceite">
-                <label for="aceite">Aceito receber alertas do Clima Safe sobre o meu bairro.</label>
-              </div>
-              <span class="erro-campo" id="erro-aceite"></span>
-            </div>
-            <div class="campo">
-              <button type="submit" class="botao">Cadastrar</button>
-            </div>
-          </form>
+          <p>O Clima Safe é a resposta do grupo ao desafio CitizenTech: tecnologia com o cidadão no centro. Ele junta a previsão de chuva com o risco de alagamento de cada bairro de São Paulo em apenas um lugar e instrui o morador sobre o que fazer e para onde ir.</p>
+          <p class="acoes">
+            <a class="botao" href="solucao.html">Ver o alerta do meu bairro</a>
+            <a class="link-seco" href="simulador.html">Simular uma chuva</a>
+          </p>
         </div>
       </div>
     </section>
-
   </main>
 
   <footer class="rodape">
@@ -158,8 +114,10 @@
         <ul>
           <li><a href="index.html">Início</a></li>
           <li><a href="solucao.html">Solução</a></li>
+          <li><a href="simulador.html">Simulador</a></li>
           <li><a href="impacto.html">Impacto</a></li>
           <li><a href="equipe.html">Equipe</a></li>
+          <li><a href="cadastro.html">Cadastro</a></li>
         </ul>
       </nav>
       <div>
@@ -176,11 +134,8 @@
     </div>
   </footer>
 
-  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ Topo</a>
+  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ <span class="voltar-topo-texto">Topo</span></a>
 
-  <script src="js/estado.js"></script>
-  <script src="js/dados.js"></script>
-  <script src="js/formulario.js"></script>
   <script src="js/fonte.js"></script>
   <script src="js/menu.js"></script>
   <script src="js/topo.js"></script>

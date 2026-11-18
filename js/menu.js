@@ -1,7 +1,4 @@
-// menu.js — no celular, o botão "Menu" mostra e esconde a lista de páginas.
-
-// Sem JavaScript o menu fica sempre aberto; com JavaScript, começa fechado no celular.
-document.documentElement.classList.add("js");
+// Botão "Menu" do celular.
 
 const botaoMenu = document.getElementById("botao-menu");
 const menu = document.getElementById("menu-principal");
@@ -11,7 +8,7 @@ botaoMenu.addEventListener("click", function () {
   botaoMenu.setAttribute("aria-expanded", aberto);
 });
 
-// Esc fecha o menu e devolve o foco para o botão
+// Fecha e devolve o foco ao botão
 document.addEventListener("keydown", function (evento) {
   if (evento.key === "Escape" && menu.classList.contains("aberto")) {
     menu.classList.remove("aberto");

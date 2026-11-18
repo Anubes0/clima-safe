@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadastro — Clima Safe</title>
+  <meta name="description" content="Cadastro para receber o alerta de enchente do seu bairro em São Paulo.">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/estado.js"></script>
+</head>
+<body id="topo">
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="faixa-emergencia">
+    <div class="container faixa-grade">
+      <p>Em emergência, ligue: <a href="tel:199">Defesa Civil 199</a> · <a href="tel:193">Bombeiros 193</a></p>
+      <div class="ajuste-fonte" role="group" aria-label="Ajustes de leitura">
+        <span aria-hidden="true">Texto</span>
+        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A-</button>
+        <button type="button" id="fonte-maior" aria-label="Aumentar o texto">A+</button>
+        <button type="button" id="alto-contraste" aria-pressed="false">Alto contraste</button>
+      </div>
+    </div>
+  </div>
+  <header class="cabecalho">
+    <div class="container cabecalho-grade">
+      <a class="logo" href="index.html">
+        <img src="img/logo.svg" alt="" width="40" height="40">
+        <span>Clima Safe</span>
+      </a>
+      <button type="button" class="botao-menu" id="botao-menu" aria-expanded="false" aria-controls="menu-principal">Menu</button>
+      <nav class="navegacao" aria-label="Principal">
+        <ul class="menu" id="menu-principal">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="solucao.html">Solução</a></li>
+          <li><a href="simulador.html">Simulador</a></li>
+          <li><a href="impacto.html">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+          <li class="menu-cta"><a href="cadastro.html" aria-current="page">Cadastro</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="topo-pagina" aria-labelledby="titulo-cadastro">
+      <div class="container">
+        <p class="sobretitulo">Cadastro</p>
+        <h1 id="titulo-cadastro">Receba o alerta do seu bairro</h1>
+        <p class="lead">Escolha o bairro e como quer ser avisado. Quando a previsão indicar perigo, o aviso chega com o nível, o que fazer e para onde ir.</p>
+      </div>
+    </section>
+    <section class="secao secao-larga" id="cadastro" aria-labelledby="titulo-dados">
+      <div class="container cadastro-grade">
+        <div class="cadastro-form">
+          <h2 id="titulo-dados">Seus dados</h2>
+          <p class="mensagem-sucesso" id="mensagem-sucesso" role="status"></p>
+
+          <form class="formulario" id="form-cadastro" novalidate>
+            <div class="campo">
+              <label for="nome">Nome</label>
+              <input type="text" id="nome" name="nome" autocomplete="name" aria-describedby="erro-nome">
+              <span class="erro-campo" id="erro-nome"></span>
+            </div>
+            <div class="campo">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="email" autocomplete="email" aria-describedby="erro-email">
+              <span class="erro-campo" id="erro-email"></span>
+            </div>
+            <div class="campo">
+              <label for="telefone">Telefone (opcional, só números com DDD)</label>
+              <input type="tel" id="telefone" name="telefone" autocomplete="tel" inputmode="numeric" aria-describedby="erro-telefone">
+              <span class="erro-campo" id="erro-telefone"></span>
+            </div>
+            <div class="campo">
+              <label for="bairro">Bairro</label>
+              <select id="bairro" name="bairro" aria-describedby="erro-bairro">
+                <option value="">Escolha seu bairro</option>
+              </select>
+              <span class="erro-campo" id="erro-bairro"></span>
+            </div>
+            <div class="campo">
+              <fieldset id="grupo-canal" aria-describedby="erro-canal">
+                <legend>Como prefere receber o alerta</legend>
+                <div class="opcao">
+                  <input type="radio" id="canal-email" name="canal" value="email">
+                  <label for="canal-email">E-mail</label>
+                </div>
+                <div class="opcao">
+                  <input type="radio" id="canal-sms" name="canal" value="sms">
+                  <label for="canal-sms">SMS</label>
+                </div>
+              </fieldset>
+              <span class="erro-campo" id="erro-canal"></span>
+            </div>
+            <div class="campo">
+              <div class="opcao">
+                <input type="checkbox" id="aceite" name="aceite" aria-describedby="erro-aceite">
+                <label for="aceite">Aceito receber alertas do Clima Safe sobre o meu bairro.</label>
+              </div>
+              <span class="erro-campo" id="erro-aceite"></span>
+            </div>
+            <div class="campo">
+              <button type="submit" class="botao">Cadastrar</button>
+            </div>
+          </form>
+        </div>
+        <aside class="cadastro-lado" aria-labelledby="titulo-como-aviso">
+          <h2 id="titulo-como-aviso">Como funciona o aviso</h2>
+          <ol class="passos">
+            <li>
+              <h3>Você escolhe o bairro</h3>
+              <p>E se prefere receber o aviso por e-mail ou por SMS.</p>
+            </li>
+            <li>
+              <h3>A previsão indica perigo</h3>
+              <p>Chuva forte prevista para o seu bairro, pelas faixas do INMET e pelo risco de alagamento.</p>
+            </li>
+            <li>
+              <h3>O aviso chega antes</h3>
+              <p>Com o nível do alerta, o que fazer e o ponto de apoio mais próximo.</p>
+            </li>
+          </ol>
+          <div class="caixa-oficial">
+            <h3>Alerta oficial da Defesa Civil</h3>
+            <p>Cadastre também o seu CEP no alerta oficial: mande um SMS com o CEP para <strong>40199</strong>.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="container rodape-grade">
+      <div>
+        <p class="rodape-titulo">Clima Safe · 2026</p>
+        <p>Protótipo do grupo QuickStart para a Global Solution CitizenTech (FIAP). Não substitui os alertas oficiais da Defesa Civil (199 e SMS 40199) nem dos Bombeiros (193).</p>
+      </div>
+      <nav aria-label="Rodapé">
+        <p class="rodape-titulo">Páginas</p>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="solucao.html">Solução</a></li>
+          <li><a href="simulador.html">Simulador</a></li>
+          <li><a href="impacto.html">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+          <li><a href="cadastro.html">Cadastro</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="rodape-titulo">Fontes dos dados</p>
+        <ul>
+          <li><a href="https://open-meteo.com/">Open-Meteo: previsão de chuva</a></li>
+          <li><a href="https://www.cnnbrasil.com.br/nacional/chuva-entenda-os-alertas-do-inmet-para-temporais/">INMET: faixas de alerta de chuva (resumo da CNN Brasil)</a></li>
+          <li><a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/21565-em-2010-brasil-tinha-8-3-milhoes-de-pessoas-morando-em-areas-com-risco-de-desastres-naturais.html">IBGE e CEMADEN: população em áreas de risco</a></li>
+          <li><a href="https://geosampa.prefeitura.sp.gov.br/">GeoSampa (Prefeitura de SP): bairros, áreas de risco, ocorrências e centros esportivos</a></li>
+          <li><a href="https://servicodados.ibge.gov.br/api/docs">IBGE: municípios e contornos da Grande São Paulo</a></li>
+          <li><a href="https://prefeitura.sp.gov.br/web/subprefeituras/w/munic%C3%ADpio-de-s%C3%A3o-paulo-subprefeituras-e-distritos-municipais-1">Prefeitura de SP: Censo 2022 por distrito</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ <span class="voltar-topo-texto">Topo</span></a>
+
+  <script src="js/dados.js"></script>
+  <script src="js/formulario.js"></script>
+  <script src="js/fonte.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/topo.js"></script>
+</body>
+</html>

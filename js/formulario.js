@@ -1,11 +1,11 @@
-// formulario.js — cadastro para receber alertas (página Equipe).
-// Valida em JavaScript e mostra os erros e o sucesso na própria página, sem janelas pop-up.
+// Validação do formulário de cadastro, com erro e sucesso na própria página.
 
 const form = document.getElementById("form-cadastro");
 const mensagemSucesso = document.getElementById("mensagem-sucesso");
 preencherSelectBairros(document.getElementById("bairro"));
+if (estado.bairro) document.getElementById("bairro").value = estado.bairro;   // bairro do simulador
 
-// Escreve (ou apaga) a mensagem de erro de um campo
+// Mensagem vazia apaga o erro
 function marcarErro(campo, mensagem) {
   const elemento = document.getElementById(campo === "canal" ? "grupo-canal" : campo);
   document.getElementById("erro-" + campo).textContent = mensagem;
@@ -42,14 +42,13 @@ form.addEventListener("submit", function (evento) {
     if (!regra.certo && primeiroErro === null) primeiroErro = regra.campo;
   }
 
-  // O foco vai para o primeiro campo com erro
+  // Foco no primeiro campo com erro
   if (primeiroErro !== null) {
     document.getElementById(primeiroErro === "canal" ? "canal-email" : primeiroErro).focus();
     return;
   }
 
-  // Guarda só quantas pessoas se cadastraram em cada bairro (estado.js).
-  // Nome, e-mail e telefone não saem do formulário.
+  // Guarda só a contagem por bairro; nome, e-mail e telefone não são salvos
   estado.cadastros[bairroId] = (estado.cadastros[bairroId] || 0) + 1;
   salvarEstado();
 

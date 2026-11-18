@@ -4,19 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Solução — Clima Safe</title>
-  <meta name="description" content="Simule o alerta de enchente do seu bairro em São Paulo ou use a previsão real de chuva.">
+  <meta name="description" content="Alerta de enchente do seu bairro em São Paulo com a previsão real de chuva de hoje e amanhã.">
   <link rel="icon" href="img/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/estado.js"></script>
 </head>
-<body id="topo">
+<body id="topo" data-modo="previsao">
   <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
   <div class="faixa-emergencia">
     <div class="container faixa-grade">
       <p>Em emergência, ligue: <a href="tel:199">Defesa Civil 199</a> · <a href="tel:193">Bombeiros 193</a></p>
-      <div class="ajuste-fonte" role="group" aria-label="Tamanho do texto">
+      <div class="ajuste-fonte" role="group" aria-label="Ajustes de leitura">
         <span aria-hidden="true">Texto</span>
-        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A−</button>
+        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A-</button>
         <button type="button" id="fonte-maior" aria-label="Aumentar o texto">A+</button>
+        <button type="button" id="alto-contraste" aria-pressed="false">Alto contraste</button>
       </div>
     </div>
   </div>
@@ -31,8 +33,10 @@
         <ul class="menu" id="menu-principal">
           <li><a href="index.html">Início</a></li>
           <li><a href="solucao.html" aria-current="page">Solução</a></li>
+          <li><a href="simulador.html">Simulador</a></li>
           <li><a href="impacto.html">Impacto</a></li>
           <li><a href="equipe.html">Equipe</a></li>
+          <li class="menu-cta"><a href="cadastro.html">Cadastro</a></li>
         </ul>
       </nav>
     </div>
@@ -43,91 +47,89 @@
       <div class="container">
         <p class="sobretitulo">Solução</p>
         <h1 id="titulo-solucao">Veja o alerta do seu bairro</h1>
-        <p class="lead">Escolha o bairro (pelo nome ou no mapa) e arraste o controle para simular uma chuva. Com internet, você também pode usar a previsão real de hoje e amanhã.</p>
+        <p class="lead">A previsão de chuva de hoje e amanhã cruzada com o risco de alagamento de cada bairro de São Paulo. Para testar outros cenários, use o <a href="simulador.html">Simulador</a>.</p>
         <nav class="indice" aria-label="Nesta página">
           <ul>
-            <li><a href="#simulador">Simulador</a></li>
-            <li><a href="#mapa">Mapa da Grande São Paulo</a></li>
-            <li><a href="#bairros">Bairros</a></li>
+            <li><a href="#previsao">Previsão real</a></li>
+            <li><a href="#mapa">Mapa</a></li>
+            <li><a href="#seu-bairro">Seu bairro</a></li>
+            <li><a href="#bairros">Todos os bairros</a></li>
             <li><a href="#regras">Como calculamos</a></li>
           </ul>
         </nav>
       </div>
     </section>
-    <section class="secao" id="simulador" aria-labelledby="titulo-simulador">
+    <section class="secao secao-larga" id="previsao" aria-labelledby="titulo-previsao">
       <div class="container secao-grade">
-        <h2 id="titulo-simulador">Simulador</h2>
+        <h2 id="titulo-previsao">Previsão real</h2>
         <div class="secao-corpo">
-          <div class="simulador">
-            <div class="controles">
-              <fieldset class="escolha-bairro">
-                <legend>Seu bairro</legend>
-                <div class="campo">
-                  <button type="button" class="botao botao-localizacao" id="btn-localizacao" aria-describedby="nota-localizacao">
-                    <svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
-                    <span id="texto-localizacao">Usar minha localização</span>
-                  </button>
-                  <p class="nota" id="nota-localizacao">O navegador vai pedir a sua permissão. A localização serve só para achar o bairro: não é guardada nem enviada.</p>
-                  <p class="status" id="status-localizacao" role="status"></p>
-                </div>
-                <p class="divisor" aria-hidden="true"><span>ou escolha</span></p>
-                <div class="campo">
-                  <label for="busca-bairro">Buscar pelo nome</label>
-                  <input type="search" id="busca-bairro" autocomplete="off" placeholder="Ex.: Penha, Sé, Jardim Helena" aria-describedby="aviso-busca">
-                  <p class="nota" id="aviso-busca" role="status"></p>
-                </div>
-                <div class="campo">
-                  <label for="select-bairro">Bairro</label>
-                  <select id="select-bairro"></select>
-                </div>
-              </fieldset>
-              <div class="campo">
-                <label for="faixa-chuva">Simular chuva: <span class="valor-chuva" id="valor-chuva">0 mm/h</span></label>
-                <input type="range" id="faixa-chuva" min="0" max="100" step="1" value="0">
-                <div class="escala" aria-hidden="true">
-                  <span class="e0">0</span><span class="e20">20</span><span class="e30">30</span><span class="e60">60</span><span class="e100">100</span>
-                </div>
-                <p class="nota">As cores da barra são as faixas do INMET: verde até 20, amarelo de 20 a 30, laranja de 30 a 60 e vermelho acima de 60 mm/h.</p>
-              </div>
-              <div class="campo">
-                <button type="button" class="botao botao-secundario" id="btn-buscar">Buscar previsão real</button>
-                <p class="status" id="status-previsao" role="status"></p>
-              </div>
+          <div class="cenario" role="group" aria-label="Previsão real">
+            <div class="cenario-chuva">
+              <p class="cenario-titulo">Previsão de chuva para as próximas 24 horas</p>
+              <p class="status" id="status-previsao" role="status"></p>
             </div>
-            <div class="painel" id="painel-resultado" aria-live="polite"></div>
+            <div class="cenario-previsao">
+              <button type="button" class="botao botao-secundario" id="btn-buscar">Atualizar previsão</button>
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
-    <section class="secao" id="mapa" aria-labelledby="titulo-mapa">
-      <div class="container secao-grade">
-        <h2 id="titulo-mapa">Mapa da Grande São Paulo</h2>
-        <div class="secao-corpo">
-          <p>A capital aparece dividida nos seus 96 bairros; em volta, os outros 38 municípios da Grande São Paulo. A cor mostra o nível de alerta. Passe o mouse para ver o nome e onde fica; <strong>clique num bairro para escolhê-lo no simulador</strong>.</p>
-          <div class="mapa-ferramentas" role="group" aria-label="Zoom do mapa">
-            <button type="button" class="botao botao-secundario botao-zoom" id="zoom-mais" aria-label="Aproximar">+</button>
-            <button type="button" class="botao botao-secundario botao-zoom" id="zoom-menos" aria-label="Afastar">−</button>
-            <button type="button" class="botao botao-secundario" id="zoom-capital">Ver a capital</button>
-            <button type="button" class="botao botao-secundario" id="zoom-escolhido">Ver o bairro escolhido</button>
-            <button type="button" class="botao botao-secundario" id="zoom-tudo">Ver tudo</button>
-            <span class="nivel-zoom" id="nivel-zoom" aria-live="polite"></span>
-            <a class="pular-mapa" href="#bairros">Pular o mapa</a>
+          <div class="painel-interativo com-semana">
+            <div class="area-mapa" id="mapa">
+              <h3>Mapa da Grande São Paulo</h3>
+              <p>A capital aparece dividida nos seus 96 bairros; em volta, os outros 38 municípios. A cor mostra o nível de alerta para a chuva prevista. <strong>Clique num bairro ou numa cidade para escolher.</strong></p>
+              <div class="mapa-ferramentas" role="group" aria-label="Zoom do mapa">
+                <button type="button" class="botao botao-secundario botao-zoom" id="zoom-mais" aria-label="Aproximar">+</button>
+                <button type="button" class="botao botao-secundario botao-zoom" id="zoom-menos" aria-label="Afastar">-</button>
+                <button type="button" class="botao botao-secundario" id="zoom-capital">Ver a capital</button>
+                <button type="button" class="botao botao-secundario" id="zoom-escolhido">Ver o bairro escolhido</button>
+                <button type="button" class="botao botao-secundario" id="zoom-tudo">Ver tudo</button>
+                <span class="nivel-zoom" id="nivel-zoom" aria-live="polite"></span>
+                <a class="pular-mapa" href="#seu-bairro">Pular o mapa</a>
+              </div>
+              <div class="mapa-caixa">
+                <svg id="mapa-svg" role="group" aria-label="Mapa da Grande São Paulo com o nível de alerta de cada bairro da capital e de cada município"></svg>
+              </div>
+              <p class="nota">Comandos: zoom com botões, duplo clique ou Ctrl + roda do mouse. Segure e arraste para mover.</p>
+              <ul class="legenda-mapa">
+                <li><span class="amostra amostra-verde"></span>Verde: sem alerta</li>
+                <li><span class="amostra amostra-amarelo"></span>Amarelo: perigo potencial</li>
+                <li><span class="amostra amostra-laranja"></span>Laranja: perigo</li>
+                <li><span class="amostra amostra-vermelho"></span>Vermelho: grande perigo</li>
+                <li><span class="amostra amostra-indisponivel"></span>Cinza: sem previsão</li>
+              </ul>
+              <p class="contagem" id="resumo-mapa"></p>
+            </div>
+            <div class="area-bairro" id="seu-bairro">
+              <div class="controles">
+                <fieldset class="escolha-bairro">
+                  <legend>Seu bairro</legend>
+                  <div class="campo">
+                    <label for="campo-bairro" id="rotulo-bairro">Digite ou escolha o bairro ou a cidade</label>
+                    <div class="combobox" id="caixa-bairro">
+                      <input type="text" id="campo-bairro" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="opcoes-bairro" aria-describedby="aviso-bairro" autocomplete="off" spellcheck="false" placeholder="Ex.: Penha, Sé, Santa Isabel">
+                      <button type="button" class="combobox-botao" id="botao-lista-bairro" tabindex="-1" aria-label="Mostrar todos os bairros e cidades" aria-controls="opcoes-bairro" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6z"/></svg>
+                      </button>
+                      <div class="combobox-lista" id="opcoes-bairro" role="listbox" aria-labelledby="rotulo-bairro" hidden></div>
+                    </div>
+                    <p class="nota" id="aviso-bairro" role="status"></p>
+                  </div>
+                  <div class="acao-localizacao">
+                    <button type="button" class="botao-texto" id="btn-localizacao">
+                      <svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                      <span id="texto-localizacao">Usar minha localização</span>
+                    </button>
+                    <p class="status" id="status-localizacao" role="status"></p>
+                  </div>
+                </fieldset>
+              </div>
+              <p class="visualmente-oculto" id="aviso-painel" role="status"></p>
+              <div class="painel" id="painel-resultado"></div>
+            </div>
+            <section class="semana" id="semana" aria-labelledby="titulo-semana">
+              <h3 id="titulo-semana">Próximos 7 dias</h3>
+              <div id="semana-conteudo"></div>
+            </section>
           </div>
-          <p class="nota">Para aproximar: botões acima, duplo clique ou Ctrl + roda do mouse. Com o mapa aproximado, arraste para mover. No teclado: Tab passa pelas áreas, Enter escolhe, + e − aproximam e as setas movem.</p>
-          <div class="mapa-caixa">
-            <svg id="mapa-svg" role="group" aria-label="Mapa da Grande São Paulo com o nível de alerta de cada bairro da capital e de cada município"></svg>
-          </div>
-          <div class="info-mapa" id="info-mapa" role="status"><p>Clique num bairro para escolhê-lo, ou num município para ver a chuva e o que fazer.</p></div>
-          <ul class="legenda-mapa">
-            <li><span class="amostra amostra-verde"></span>Verde: sem alerta</li>
-            <li><span class="amostra amostra-amarelo"></span>Amarelo: perigo potencial</li>
-            <li><span class="amostra amostra-laranja"></span>Laranja: perigo</li>
-            <li><span class="amostra amostra-vermelho"></span>Vermelho: grande perigo</li>
-            <li><span class="amostra amostra-indisponivel"></span>Cinza: sem previsão</li>
-            <li><span class="amostra amostra-escolhido"></span>Contorno grosso: bairro escolhido</li>
-          </ul>
-          <p class="contagem" id="resumo-mapa"></p>
-          <p class="nota">Na simulação, a chuva de cada município em volta da capital varia um pouco em torno do valor do controle, como numa chuva de verdade. Contornos: IBGE (municípios) e GeoSampa, da Prefeitura (bairros da capital).</p>
         </div>
       </div>
     </section>
@@ -135,6 +137,10 @@
       <div class="container secao-grade">
         <h2 id="titulo-bairros">Bairros</h2>
         <div class="secao-corpo">
+          <div class="bairro-destaque" id="bairro-destaque"></div>
+          <details class="recolhivel todos-bairros" id="todos-bairros">
+            <summary>Ver todos os bairros <span class="resumo-bairros" id="resumo-bairros"></span></summary>
+            <div class="recolhivel-corpo">
           <div class="filtros" role="group" aria-label="Filtros dos bairros">
             <div class="campo">
               <label for="filtro-regiao">Região</label>
@@ -178,6 +184,8 @@
           </div>
           <p class="contagem" id="contagem-bairros" role="status"></p>
           <div id="lista-bairros"></div>
+            </div>
+          </details>
         </div>
       </div>
     </section>
@@ -185,33 +193,29 @@
       <div class="container secao-grade">
         <h2 id="titulo-regras">Como calculamos</h2>
         <div class="secao-corpo">
-          <p>As regras são as mesmas para todos os bairros e estão abertas aqui.</p>
           <details class="recolhivel">
             <summary>Ver as regras do alerta</summary>
             <div class="recolhivel-corpo">
-              <h3>1. A chuva define o nível (faixas do INMET)</h3>
+              <h3 id="titulo-tabela-nivel">Nível de chuva prevista (faixas do INMET)</h3>
               <div class="tabela-rolagem">
-                <table>
-                  <caption>Nível pela chuva prevista</caption>
+                <table aria-labelledby="titulo-tabela-nivel">
                   <thead>
-                    <tr><th scope="col">Nível</th><th scope="col">Chuva por hora</th><th scope="col">Chuva no dia</th></tr>
+                    <tr><th scope="col">Nível</th><th scope="col">Chuva por hora</th><th scope="col">Chuva em 24 h</th></tr>
                   </thead>
                   <tbody>
                     <tr><th scope="row" class="nivel nivel-verde">Verde</th><td>menos de 20 mm/h</td><td>menos de 50 mm</td></tr>
-                    <tr><th scope="row" class="nivel nivel-amarelo">Amarelo</th><td>de 20 até menos de 30 mm/h</td><td>não define (só a chuva por hora)</td></tr>
+                    <tr><th scope="row" class="nivel nivel-amarelo">Amarelo</th><td>de 20 até menos de 30 mm/h</td><td>sem faixa em 24 h (o amarelo vem só da chuva por hora)</td></tr>
                     <tr><th scope="row" class="nivel nivel-laranja">Laranja</th><td>de 30 a 60 mm/h</td><td>de 50 a 100 mm</td></tr>
                     <tr><th scope="row" class="nivel nivel-vermelho">Vermelho</th><td>mais de 60 mm/h</td><td>mais de 100 mm</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p>No limite exato (30 mm/h ou 50 mm no dia) vale o nível mais alto. Se a chuva por hora e a do dia apontarem níveis diferentes, vale o maior.</p>
 
-              <h3>2. O risco do bairro ajusta o nível</h3>
+              <h3>O risco do bairro ajusta o nível</h3>
               <ul>
                 <li><strong>Risco alto:</strong> sobe um nível.</li>
                 <li><strong>Risco médio:</strong> fica igual.</li>
                 <li><strong>Risco baixo:</strong> desce um nível, nunca abaixo de verde.</li>
-                <li>Sem chuva forte (verde), o nível não muda: não existe alerta sem chuva.</li>
               </ul>
               <p>O risco de cada bairro vem de duas bases da Prefeitura, no GeoSampa: as áreas de risco de alagamento e inundação mapeadas (com grau de R1 a R4 e o número de moradias) e as ocorrências de alagamento e inundação registradas em 2026.</p>
               <ul>
@@ -222,8 +226,11 @@
               <p>Pela regra, 33 bairros têm risco alto, 54 médio e 9 baixo. Alguns cards trazem também notícias de alagamentos, com a fonte.</p>
               <p>No mapa, a cor dos municípios em volta da capital usa só a chuva: o risco foi levantado apenas para os bairros da capital.</p>
 
-              <h3>3. Por dentro</h3>
-              <p>A previsão vem da Open-Meteo, um serviço gratuito de dados do tempo. As faixas de alerta são as do INMET. Os bairros, o risco e os pontos de apoio vêm do GeoSampa, da Prefeitura; os contornos dos municípios, do IBGE. O site é feito só com HTML, CSS e JavaScript.</p>
+              <h3>Próximos 7 dias</h3>
+              <p>O site também mostra os próximos 7 dias do lugar escolhido. Cada dia segue a mesma regra: a hora mais chuvosa e o total do dia, pelas faixas do INMET, e o risco do bairro. Hoje conta só as horas que faltam. A partir do quarto dia, a previsão é uma tendência e pode mudar.</p>
+
+              <h3>Por dentro</h3>
+              <p>A previsão vem da Open-Meteo, um serviço gratuito de dados do tempo. As faixas de alerta são as do INMET. Os bairros, o risco e os pontos de apoio vêm do GeoSampa, da Prefeitura.</p>
               <p class="aviso">O ponto de apoio de cada bairro é o Centro Esportivo da Prefeitura mais perto do centro do bairro, em linha reta. Não é abrigo oficial e a capacidade não é conhecida. Antes de sair, confirme com a Defesa Civil (199).</p>
             </div>
           </details>
@@ -244,8 +251,10 @@
         <ul>
           <li><a href="index.html">Início</a></li>
           <li><a href="solucao.html">Solução</a></li>
+          <li><a href="simulador.html">Simulador</a></li>
           <li><a href="impacto.html">Impacto</a></li>
           <li><a href="equipe.html">Equipe</a></li>
+          <li><a href="cadastro.html">Cadastro</a></li>
         </ul>
       </nav>
       <div>
@@ -262,13 +271,13 @@
     </div>
   </footer>
 
-  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ Topo</a>
+  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ <span class="voltar-topo-texto">Topo</span></a>
 
-  <script src="js/estado.js"></script>
   <script src="js/dados.js"></script>
   <script src="js/mapa-dados.js"></script>
   <script src="js/api.js"></script>
   <script src="js/mapa.js"></script>
+  <script src="js/campo-bairro.js"></script>
   <script src="js/simulacao.js"></script>
   <script src="js/localizacao.js"></script>
   <script src="js/fonte.js"></script>

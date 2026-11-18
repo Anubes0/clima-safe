@@ -4,19 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Impacto — Clima Safe</title>
-  <meta name="description" content="Indicadores, crescimento e contribuição do Clima Safe para os ODS 11 e 13.">
+  <meta name="description" content="Indicadores, gráficos do risco por região e contribuição do Clima Safe para os ODS 11 e 13.">
   <link rel="icon" href="img/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/estado.js"></script>
 </head>
 <body id="topo">
   <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
   <div class="faixa-emergencia">
     <div class="container faixa-grade">
       <p>Em emergência, ligue: <a href="tel:199">Defesa Civil 199</a> · <a href="tel:193">Bombeiros 193</a></p>
-      <div class="ajuste-fonte" role="group" aria-label="Tamanho do texto">
+      <div class="ajuste-fonte" role="group" aria-label="Ajustes de leitura">
         <span aria-hidden="true">Texto</span>
-        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A−</button>
+        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A-</button>
         <button type="button" id="fonte-maior" aria-label="Aumentar o texto">A+</button>
+        <button type="button" id="alto-contraste" aria-pressed="false">Alto contraste</button>
       </div>
     </div>
   </div>
@@ -31,8 +33,10 @@
         <ul class="menu" id="menu-principal">
           <li><a href="index.html">Início</a></li>
           <li><a href="solucao.html">Solução</a></li>
+          <li><a href="simulador.html">Simulador</a></li>
           <li><a href="impacto.html" aria-current="page">Impacto</a></li>
           <li><a href="equipe.html">Equipe</a></li>
+          <li class="menu-cta"><a href="cadastro.html">Cadastro</a></li>
         </ul>
       </nav>
     </div>
@@ -43,106 +47,171 @@
       <div class="container">
         <p class="sobretitulo">Impacto</p>
         <h1 id="titulo-impacto">O que o Clima Safe muda</h1>
-        <p class="lead">Quem ganha é o morador que passa a saber da enchente antes dela chegar. Os números abaixo vêm da lista de bairros e do que foi feito no site.</p>
+        <p class="lead">Quem ganha é o morador que passa a saber da enchente antes de ela chegar. Os números e gráficos abaixo mostram a importância desse serviço. Os cálculos usam dados públicos.</p>
       </div>
     </section>
-    <section class="secao" aria-labelledby="titulo-indicadores">
+    <section class="secao secao-larga" aria-labelledby="titulo-numeros">
       <div class="container secao-grade">
-        <h2 id="titulo-indicadores">Como medimos</h2>
+        <h2 id="titulo-numeros">Em números</h2>
         <div class="secao-corpo">
-          <ul class="indicadores" id="indicadores">
-            <li class="estatistica">
-              <span class="numero" id="ind-bairros">0</span>
-              <div><p>bairros monitorados (os distritos da capital)</p></div>
+          <ul class="kpis">
+            <li class="kpi">
+              <span class="kpi-numero" id="ind-bairros">0</span>
+              <span class="kpi-rotulo">bairros monitorados</span>
+              <span class="kpi-nota">os distritos oficiais da capital</span>
             </li>
-            <li class="estatistica">
-              <span class="numero" id="ind-populacao">0</span>
-              <div>
-                <p>moradores nesses bairros</p>
-                <p class="fonte">Fonte: Prefeitura de SP, Censo 2022 por distrito.</p>
-              </div>
+            <li class="kpi">
+              <span class="kpi-numero" id="ind-populacao">0</span>
+              <span class="kpi-rotulo">moradores nesses bairros</span>
+              <span class="kpi-nota" id="ind-populacao-nota"></span>
             </li>
-            <li class="estatistica">
-              <span class="numero" id="ind-alta">0</span>
-              <div><p>bairros com risco alto</p></div>
+            <li class="kpi kpi-alerta">
+              <span class="kpi-numero" id="ind-pop-alta">0</span>
+              <span class="kpi-rotulo">moram em bairros de risco alto</span>
+              <span class="kpi-nota" id="ind-pop-alta-nota"></span>
             </li>
-            <li class="estatistica">
-              <span class="numero" id="ind-cadastros">0</span>
-              <div><p>cadastros para receber alerta</p></div>
+            <li class="kpi kpi-alerta">
+              <span class="kpi-numero" id="ind-alta">0</span>
+              <span class="kpi-rotulo">bairros com risco alto</span>
+              <span class="kpi-nota" id="ind-alta-nota"></span>
             </li>
-            <li class="estatistica">
-              <span class="numero" id="ind-alertas">0</span>
-              <div><p>alertas emitidos</p></div>
-            </li>
-            <li class="estatistica">
-              <span class="numero" id="ind-antecedencia">sem dados</span>
-              <div>
-                <p>de antecedência média do alerta antes do pico da chuva</p>
-                <p class="fonte" id="ind-antecedencia-nota"></p>
-              </div>
+            <li class="kpi">
+              <span class="kpi-numero" id="ind-apoio">0</span>
+              <span class="kpi-rotulo">pontos de apoio indicados</span>
+              <span class="kpi-nota">Centros Esportivos da Prefeitura</span>
             </li>
           </ul>
-          <h3>Cadastros por bairro</h3>
-          <ul class="lista-simples" id="lista-cadastros"></ul>
         </div>
       </div>
     </section>
-    <section class="secao" aria-labelledby="titulo-cresce">
+    <section class="secao secao-larga" aria-labelledby="titulo-risco">
+      <div class="container secao-grade">
+        <h2 id="titulo-risco">Onde está o risco</h2>
+        <div class="secao-corpo">
+          <div class="graficos">
+            <figure class="grafico-cartao">
+              <figcaption>Bairros por região e risco</figcaption>
+              <ul class="barras" id="grafico-regioes"></ul>
+            </figure>
+            <figure class="grafico-cartao">
+              <figcaption>Moradores por risco do bairro</figcaption>
+              <p class="grafico-frase" id="frase-moradores"></p>
+              <div id="grafico-moradores"></div>
+            </figure>
+          </div>
+          <ul class="legenda-mapa">
+            <li><span class="amostra amostra-risco-alto"></span>Risco alto</li>
+            <li><span class="amostra amostra-risco-medio"></span>Risco médio</li>
+            <li><span class="amostra amostra-risco-baixo"></span>Risco baixo</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="secao secao-larga" aria-labelledby="titulo-uso">
+      <div class="container secao-grade">
+        <h2 id="titulo-uso">Uso da comunidade</h2>
+        <div class="secao-corpo">
+          <ul class="kpis">
+            <li class="kpi">
+              <span class="kpi-numero" id="ind-cadastros">0</span>
+              <span class="kpi-rotulo">cadastros para receber alerta</span>
+            </li>
+            <li class="kpi">
+              <span class="kpi-numero" id="ind-alertas">0</span>
+              <span class="kpi-rotulo">alertas emitidos</span>
+              <span class="kpi-nota">amarelo ou mais</span>
+            </li>
+            <li class="kpi">
+              <span class="kpi-numero numero-vazio" id="ind-antecedencia">sem dados</span>
+              <span class="kpi-rotulo">de antecedência média antes do pico da chuva</span>
+              <span class="kpi-nota" id="ind-antecedencia-nota"></span>
+            </li>
+          </ul>
+          <figure class="grafico-cartao">
+            <figcaption>Cadastros por bairro</figcaption>
+            <div id="grafico-cadastros"></div>
+          </figure>
+        </div>
+      </div>
+    </section>
+    <section class="secao secao-larga" aria-labelledby="titulo-cresce">
       <div class="container secao-grade">
         <h2 id="titulo-cresce">Como o impacto cresce</h2>
         <div class="secao-corpo">
-          <ul class="lista-pontos">
+          <ol class="trilha">
             <li><h3>Toda a Grande São Paulo</h3><p>Os 96 bairros da capital já têm risco calculado. O mapa mostra a chuva nos outros 38 municípios; o próximo passo é levantar as áreas de risco de cada um.</p></li>
             <li><h3>Aviso de verdade</h3><p>Hoje o cadastro é um protótipo. Com um serviço de envio, ele passa a mandar o alerta por SMS ou e-mail.</p></li>
             <li><h3>Dados oficiais em dia</h3><p>O risco usa as ocorrências registradas pela Prefeitura. Atualizando a base a cada temporada de chuva, o risco de cada bairro acompanha o que acontece de verdade.</p></li>
             <li><h3>Quem não usa internet</h3><p>Associações de bairro levam o aviso por grupos de mensagens e cartazes.</p></li>
-          </ul>
+          </ol>
         </div>
       </div>
     </section>
-    <section class="secao" aria-labelledby="titulo-ods-tab">
+    <section class="secao secao-larga" aria-labelledby="titulo-ods-tab">
       <div class="container secao-grade">
         <h2 id="titulo-ods-tab">Contribuição para os ODS</h2>
         <div class="secao-corpo">
-          <div class="tabela-rolagem">
-            <table>
-              <caption>ODS atendidos pelo projeto</caption>
-              <thead>
-                <tr><th scope="col">ODS</th><th scope="col">Meta relacionada</th><th scope="col">Como o projeto contribui</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">ODS 11: Cidades e comunidades sustentáveis</th>
-                  <td>11.5: reduzir mortes e pessoas afetadas por desastres, inclusive os ligados à água.</td>
-                  <td>Avisa o morador antes da chuva forte e indica o caminho até o ponto de apoio.</td>
-                </tr>
-                <tr>
-                  <th scope="row">ODS 13: Ação contra a mudança global do clima</th>
-                  <td>13.1: reforçar a resiliência e a capacidade de adaptação a riscos ligados ao clima.</td>
-                  <td>Usa dados do tempo para a comunidade se preparar antes do evento extremo.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="secao" aria-labelledby="titulo-ecossistema">
-      <div class="container secao-grade">
-        <h2 id="titulo-ecossistema">Quem faz parte</h2>
-        <div class="secao-corpo">
-          <ul class="ecossistema">
-            <li><h3>Morador</h3><p>Recebe o alerta do bairro e sabe o que fazer.</p></li>
-            <li><h3>Defesa Civil (199 e SMS 40199)</h3><p>Fonte oficial dos alertas e das orientações. O Clima Safe soma com ela, não a substitui.</p></li>
-            <li><h3>Prefeitura e CGE</h3><p>Dados públicos de risco, população e equipamentos.</p></li>
-            <li><h3>Associações de bairro</h3><p>Levam o aviso para quem não usa o site.</p></li>
-            <li><h3>Pontos de apoio</h3><p>Equipamentos públicos indicados como referência.</p></li>
-            <li><h3>Bombeiros (193)</h3><p>Em emergência com risco de vida, ligue 193.</p></li>
+          <ul class="ods-cartoes">
+            <li class="ods-cartao ods-11">
+              <p class="ods-selo">ODS 11</p>
+              <h3>Cidades e comunidades sustentáveis</h3>
+              <p><strong>Meta 11.5:</strong> reduzir mortes e pessoas afetadas por desastres, inclusive os ligados à água.</p>
+              <p><strong>Como o projeto contribui:</strong> avisa o morador antes da chuva forte e indica o caminho até o ponto de apoio.</p>
+            </li>
+            <li class="ods-cartao ods-13">
+              <p class="ods-selo">ODS 13</p>
+              <h3>Ação contra a mudança global do clima</h3>
+              <p><strong>Meta 13.1:</strong> reforçar a resiliência e a capacidade de adaptação a riscos ligados ao clima.</p>
+              <p><strong>Como o projeto contribui:</strong> usa dados do tempo para a comunidade se preparar antes do evento extremo.</p>
+            </li>
           </ul>
         </div>
       </div>
     </section>
-
+    <section class="secao secao-larga" aria-labelledby="titulo-ecossistema">
+      <div class="container secao-grade">
+        <h2 id="titulo-ecossistema">Quem faz parte</h2>
+        <div class="secao-corpo">
+          <ul class="atores">
+            <li class="ator ator-centro">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 18a5 5 0 0 1-.9-9.9A6 6 0 0 1 17.6 9 4.5 4.5 0 0 1 18 18z"/></svg>
+              <h3>Clima Safe</h3>
+              <p>Junta a previsão de chuva com o risco do bairro e transforma isso num alerta simples.</p>
+            </li>
+            <li class="ator">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg>
+              <h3>Morador</h3>
+              <p>Recebe o alerta do bairro e sabe o que fazer.</p>
+            </li>
+            <li class="ator">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l8 3v6c0 5-3.5 9.5-8 11-4.5-1.5-8-6-8-11V5z"/></svg>
+              <h3>Defesa Civil (199 e SMS 40199)</h3>
+              <p>Fonte oficial dos alertas e das orientações. O Clima Safe soma com ela, não a substitui.</p>
+            </li>
+            <li class="ator">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 9l10-6 10 6v2H2zM4 12h3v7H4zm6.5 0h3v7h-3zM17 12h3v7h-3zM2 20h20v2H2z"/></svg>
+              <h3>Prefeitura e CGE</h3>
+              <p>Dados públicos de risco, população e equipamentos.</p>
+            </li>
+            <li class="ator">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20a6 6 0 0 1 12 0zm8 0a6 6 0 0 1 12 0z"/></svg>
+              <h3>Associações de bairro</h3>
+              <p>Levam o aviso para quem não usa o site.</p>
+            </li>
+            <li class="ator">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+              <h3>Pontos de apoio</h3>
+              <p>Equipamentos públicos indicados como referência.</p>
+            </li>
+            <li class="ator">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.4 2.3.6 3.6.6a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.6 3.6a1 1 0 0 1-.25 1z"/></svg>
+              <h3>Bombeiros (193)</h3>
+              <p>Em emergência com risco de vida, ligue 193.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="rodape">
@@ -156,8 +225,10 @@
         <ul>
           <li><a href="index.html">Início</a></li>
           <li><a href="solucao.html">Solução</a></li>
+          <li><a href="simulador.html">Simulador</a></li>
           <li><a href="impacto.html">Impacto</a></li>
           <li><a href="equipe.html">Equipe</a></li>
+          <li><a href="cadastro.html">Cadastro</a></li>
         </ul>
       </nav>
       <div>
@@ -174,9 +245,8 @@
     </div>
   </footer>
 
-  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ Topo</a>
+  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ <span class="voltar-topo-texto">Topo</span></a>
 
-  <script src="js/estado.js"></script>
   <script src="js/dados.js"></script>
   <script src="js/impacto.js"></script>
   <script src="js/fonte.js"></script>

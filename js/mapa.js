@@ -1,25 +1,19 @@
-// mapa.js — mapa da Grande São Paulo desenhado em SVG, sem biblioteca.
-// A capital aparece dividida nos seus 96 bairros (distritos); os outros 38 municípios aparecem inteiros.
-// Cada área é um <path> com a classe CSS do nível de alerta ("mapa-alerta-<nível>").
-// Usa as regras e o estado de simulacao.js.
-//
-// O desenho é feito uma vez só. Depois, mudar a chuva só troca as classes de cor,
-// e o zoom só troca a parte do desenho que aparece (o viewBox).
+// Mapa da Grande São Paulo em SVG, sem biblioteca.
+// Desenhado uma vez; depois só mudam as classes de cor e o viewBox (zoom).
 
 const LARGURA_MAPA = 800;
 
-// Os municípios em volta da capital (a capital é desenhada pelos seus bairros)
+// A capital é desenhada pelos bairros
 const OUTROS_MUNICIPIOS = MUNICIPIOS_RMSP.filter(municipio => municipio.nome !== "São Paulo");
 
-let previsoesMunicipios = [];   // previsão real de cada município de OUTROS_MUNICIPIOS (preenchida em simulacao.js)
+let previsoesMunicipios = [];   // preenchida em simulacao.js
 
-// Na simulação, a chuva de cada município varia em torno do valor do controle,
-// como numa chuva de verdade. O fator (de 0,6 a 1,4) é sorteado uma vez ao abrir a página.
+// Na simulação, cada município recebe de 0,6 a 1,4 vez a chuva do controle (sorteado ao abrir)
 const fatorDeChuva = OUTROS_MUNICIPIOS.map(() => 0.6 + Math.random() * 0.8);
 
-// ---------- Conversão de latitude/longitude para pontos do desenho ----------
+// ---------- Latitude/longitude -> desenho ----------
 
-// Um contorno pode ter mais de um polígono (ilhas, partes separadas)
+// Polygon ou MultiPolygon
 function poligonosDe(geometria) {
   return geometria.type === "Polygon" ? [geometria.coordinates] : geometria.coordinates;
 }
@@ -36,7 +30,7 @@ for (const municipio of MUNICIPIOS_RMSP) {
   }
 }
 
-// Perto da linha do Equador um grau de longitude vale quase um de latitude; em São Paulo, menos.
+// Em São Paulo, um grau de longitude é menor que um de latitude
 const cosLatitude = Math.cos((minLat + maxLat) / 2 * Math.PI / 180);
 const escala = LARGURA_MAPA / ((maxLon - minLon) * cosLatitude);
 const ALTURA_MAPA = Math.round((maxLat - minLat) * escala);
@@ -63,21 +57,20 @@ function chuvaDoMunicipio(indice) {
   return previsoesMunicipios[indice] || null;
 }
 
-// O município usa só a chuva. O ajuste pelo risco vale para os bairros da capital,
-// os únicos com áreas de risco levantadas.
+// Município usa só a chuva: o risco só existe para os bairros da capital
 function nivelDoMunicipio(indice) {
   const chuva = chuvaDoMunicipio(indice);
   return chuva ? classificarChuva(chuva.mmHoraMax, chuva.mmDia) : null;
 }
 
-// ---------- Desenho (feito uma vez) ----------
+// ---------- Desenho ----------
 
 const svgMapa = document.getElementById("mapa-svg");
 
 function desenharMapa() {
   let html = "";
 
-  // Contorno da capital por baixo dos bairros: tapa qualquer frestinha entre as divisas
+  // Fundo da capital: tapa frestas entre os bairros
   html += `<path class="mapa-fundo-capital" d="${caminhoSvg(CONTORNO_CAPITAL)}"></path>`;
 
   OUTROS_MUNICIPIOS.forEach(function (municipio, i) {
@@ -88,38 +81,48 @@ function desenharMapa() {
     html += `<path class="mapa-bairro" d="${caminhoSvg(CONTORNOS_DISTRITOS[bairro.id])}" tabindex="0" data-bairro="${bairro.id}"></path>`;
   }
 
-  // Contorno grosso da capital por cima, para ela se destacar na Grande São Paulo
+  // Borda grossa da capital por cima
   html += `<path class="mapa-borda-capital" d="${caminhoSvg(CONTORNO_CAPITAL)}"></path>`;
 
-  svgMapa.innerHTML = html + ETIQUETA_SVG;   // a etiqueta vai por último para ficar por cima
+  // Contorno do bairro ou da cidade escolhida, por cima de tudo (o desenho vem em atualizarCoresDoMapa)
+  html += `<path class="mapa-contorno-escolhido" id="contorno-escolhido" aria-hidden="true"></path>`;
+
+  // Contorno do foco do teclado, por cima até do escolhido: fundo branco e linha na cor de foco
+  html += `<g class="mapa-foco" aria-hidden="true"><path class="foco-fundo"></path><path class="foco-linha"></path></g>`;
+
+  svgMapa.innerHTML = html + ETIQUETA_SVG;   // etiqueta por último, por cima
   aplicarVista();
 }
 
-// ---------- Cores (a cada mudança de chuva ou de bairro escolhido) ----------
+// ---------- Cores ----------
 
 function trocarNivel(elemento, classeBase, nivel, descricao) {
   elemento.setAttribute("class", `${classeBase} mapa-alerta-${nivel || "indisponivel"}`);
-  elemento.setAttribute("aria-label", descricao + ": " + (nivel ? INFO_NIVEL[nivel].nome : "previsão indisponível"));
+  elemento.setAttribute("aria-label", descricao + ": " + (nivel ? INFO_NIVEL[nivel].nome : textoSemPrevisao().toLowerCase()));
 }
 
 function atualizarCoresDoMapa() {
+  // municipioEscolhido e bairroEscolhido: simulacao.js (vale a cidade, se houver)
   svgMapa.querySelectorAll("[data-indice]").forEach(function (elemento) {
     const indice = Number(elemento.getAttribute("data-indice"));
-    trocarNivel(elemento, "mapa-municipio", nivelDoMunicipio(indice), OUTROS_MUNICIPIOS[indice].nome);
+    const escolhido = indice === municipioEscolhido ? " escolhido" : "";
+    trocarNivel(elemento, "mapa-municipio" + escolhido, nivelDoMunicipio(indice), OUTROS_MUNICIPIOS[indice].nome);
   });
 
   svgMapa.querySelectorAll("[data-bairro]").forEach(function (elemento) {
     const bairro = buscarBairro(elemento.getAttribute("data-bairro"));
-    const escolhido = bairro.id === bairroEscolhido.id ? " escolhido" : "";
+    const escolhido = municipioEscolhido === null && bairro.id === bairroEscolhido.id ? " escolhido" : "";
     trocarNivel(elemento, "mapa-bairro" + escolhido, nivelDoBairro(bairro), bairro.nome + " (bairro da capital)");
   });
 
-  // O bairro escolhido vai para o fim da lista, para o contorno grosso dele não ficar escondido
-  const escolhido = svgMapa.querySelector(".mapa-bairro.escolhido");
-  svgMapa.insertBefore(escolhido, svgMapa.querySelector(".mapa-borda-capital"));
+  // O contorno grosso copia o desenho do escolhido: fica por cima dos vizinhos sem mudar
+  // a ordem dos elementos (a ordem do Tab e o foco continuam os mesmos)
+  const escolhido = svgMapa.querySelector(".escolhido");
+  document.getElementById("contorno-escolhido").setAttribute("d", escolhido ? escolhido.getAttribute("d") : "");
+  document.getElementById("zoom-escolhido").textContent =
+    municipioEscolhido === null ? "Ver o bairro escolhido" : "Ver a cidade escolhida";
 
   escreverResumoDoMapa();
-  if (municipioAberto !== null) mostrarMunicipio(municipioAberto);
 }
 
 function escreverResumoDoMapa() {
@@ -127,25 +130,30 @@ function escreverResumoDoMapa() {
   for (const bairro of BAIRROS) contagem[nivelDoBairro(bairro) || "indisponivel"]++;
   let texto = `Bairros da capital: ${contagem.verde} em verde, ${contagem.amarelo} em amarelo, ` +
     `${contagem.laranja} em laranja e ${contagem.vermelho} em vermelho.`;
-  if (contagem.indisponivel > 0) texto += ` Sem previsão: ${contagem.indisponivel}.`;
+  if (contagem.indisponivel === BAIRROS.length) {
+    // Nenhum bairro com previsão: ainda chegando (Solução) ou a busca falhou
+    texto = esperandoPrevisao ? "Buscando a previsão para os bairros da capital…" : "Sem previsão para os bairros da capital agora.";
+  } else if (contagem.indisponivel > 0) {
+    texto += ` Sem previsão: ${contagem.indisponivel}.`;
+  }
   document.getElementById("resumo-mapa").textContent = texto;
 }
 
 // ---------- Zoom e movimento ----------
 
-const MAIOR_ZOOM = 12;    // de perto, a área visível fica 12 vezes menor que o mapa inteiro
-const PROPORCAO = 0.85;   // altura da janela do mapa / largura: mais alta que a Grande SP, porque a capital é comprida
+const MAIOR_ZOOM = 12;    // zoom máximo: 12x
+const PROPORCAO = 0.85;   // altura / largura da janela do mapa
 
 const vistaInteira = { x: 0, y: (ALTURA_MAPA - LARGURA_MAPA * PROPORCAO) / 2, largura: LARGURA_MAPA, altura: LARGURA_MAPA * PROPORCAO };
 let vista = Object.assign({}, vistaInteira);
 
-// Mantém a vista dentro do mapa e entre o zoom mínimo e o máximo
+// Mantém a vista dentro do mapa e dos limites de zoom
 function ajustarVista() {
   vista.largura = Math.min(LARGURA_MAPA, Math.max(LARGURA_MAPA / MAIOR_ZOOM, vista.largura));
   vista.altura = vista.largura * PROPORCAO;
   vista.x = Math.min(LARGURA_MAPA - vista.largura, Math.max(0, vista.x));
   if (vista.altura >= ALTURA_MAPA) {
-    vista.y = (ALTURA_MAPA - vista.altura) / 2;   // o mapa inteiro cabe na altura: fica centralizado
+    vista.y = (ALTURA_MAPA - vista.altura) / 2;   // cabe inteiro: centraliza
   } else {
     vista.y = Math.min(ALTURA_MAPA - vista.altura, Math.max(0, vista.y));
   }
@@ -154,14 +162,17 @@ function ajustarVista() {
 function aplicarVista() {
   ajustarVista();
   svgMapa.setAttribute("viewBox", `${vista.x} ${vista.y} ${vista.largura} ${vista.altura}`);
-  // Ampliado, o mapa pode ser arrastado (no celular, o dedo move o mapa e não a página)
+  // Ampliado, o mapa pode ser arrastado
   svgMapa.classList.toggle("ampliado", vista.largura < LARGURA_MAPA);
   const nivelDoZoom = Math.round(LARGURA_MAPA / vista.largura * 10) / 10;
-  document.getElementById("nivel-zoom").textContent = "Zoom: " + String(nivelDoZoom).replace(".", ",") + "×";
+  // O leitor de tela lê o zoom: só troca o texto quando ele muda (arrastar não muda)
+  const rotuloZoom = document.getElementById("nivel-zoom");
+  const textoZoom = "Zoom: " + String(nivelDoZoom).replace(".", ",") + "×";
+  if (rotuloZoom.textContent !== textoZoom) rotuloZoom.textContent = textoZoom;
   esconderEtiqueta();
 }
 
-// Aproxima (fator maior que 1) ou afasta (menor que 1) mantendo parado o ponto (px, py) do desenho
+// fator > 1 aproxima, < 1 afasta; o ponto (px, py) fica parado
 function zoom(fator, px, py) {
   const novaLargura = vista.largura / fator;
   vista.x = px - (px - vista.x) * novaLargura / vista.largura;
@@ -174,8 +185,7 @@ function zoomNoCentro(fator) {
   zoom(fator, vista.x + vista.largura / 2, vista.y + vista.altura / 2);
 }
 
-// Mostra uma área inteira (x, y, largura, altura do desenho) no centro do mapa.
-// "margem" é quanto de espaço sobra em volta: 1,1 = quase justo; 3 = mostra também os vizinhos.
+// Centraliza uma área; margem 1,1 = justo, 3 = mostra os vizinhos
 function mostrarArea(area, margem) {
   const largura = Math.max(area.largura, area.altura / PROPORCAO) * margem;
   vista.largura = Math.min(LARGURA_MAPA, Math.max(LARGURA_MAPA / MAIOR_ZOOM, largura));
@@ -189,7 +199,7 @@ function areaDoElemento(elemento) {
   return { x: caixa.x, y: caixa.y, largura: caixa.width, altura: caixa.height };
 }
 
-// Ponto da tela (posição do mouse) -> ponto do desenho
+// Ponto da tela -> ponto do desenho
 function pontoDoDesenho(xTela, yTela) {
   const ponto = svgMapa.createSVGPoint();
   ponto.x = xTela;
@@ -197,23 +207,21 @@ function pontoDoDesenho(xTela, yTela) {
   return ponto.matrixTransform(svgMapa.getScreenCTM().inverse());
 }
 
-// ---------- Etiqueta que aparece ao passar o mouse (ou ao focar com Tab) ----------
-// A etiqueta é desenhada dentro do próprio SVG e posicionada só com atributos (x, y, transform),
-// sem CSS inline.
+// ---------- Etiqueta (mouse ou Tab) ----------
+// Desenhada dentro do SVG e posicionada por atributos, sem CSS inline.
 
 const ETIQUETA_SVG = `<g class="etiqueta-mapa" id="etiqueta-mapa" visibility="hidden" aria-hidden="true">
   <rect rx="2"></rect>
   <text><tspan class="etiqueta-nome"></tspan><tspan></tspan><tspan></tspan></text>
 </g>`;
 
-// -23.5614 vira "23,56° S" e -46.5964 vira "46,60° O" (São Paulo fica ao sul e a oeste)
+// -23.5614, -46.5964 -> "23,56° S, 46,60° O"
 function formatarCoordenadas(latitude, longitude) {
   const grau = valor => Math.abs(valor).toFixed(2).replace(".", ",") + "°";
   return grau(latitude) + " S, " + grau(longitude) + " O";
 }
 
-// As três linhas da etiqueta para o elemento do mapa (município ou bairro).
-// Devolve null se o elemento não for um município nem um bairro.
+// Três linhas da etiqueta (null se não for município nem bairro)
 function linhasDaEtiqueta(elemento) {
   const indice = elemento.getAttribute("data-indice");
   const idBairro = elemento.getAttribute("data-bairro");
@@ -230,7 +238,7 @@ function linhasDaEtiqueta(elemento) {
   return null;
 }
 
-// Mostra a etiqueta perto do ponto (xTela, yTela), sem deixar sair do mapa
+// Perto do ponto, sem sair do mapa
 function mostrarEtiqueta(elemento, xTela, yTela) {
   const linhas = linhasDaEtiqueta(elemento);
   if (!linhas) {
@@ -240,10 +248,10 @@ function mostrarEtiqueta(elemento, xTela, yTela) {
   const grupo = document.getElementById("etiqueta-mapa");
   const texto = grupo.querySelector("text");
   const fundo = grupo.querySelector("rect");
-  const tamanho = vista.largura / LARGURA_MAPA;   // ampliado, a etiqueta precisa ser menor no desenho
+  const tamanho = vista.largura / LARGURA_MAPA;   // ampliado, a etiqueta encolhe no desenho
   const folga = 8 * tamanho;
 
-  // Texto: uma linha embaixo da outra
+  // Uma linha embaixo da outra
   texto.setAttribute("font-size", 13 * tamanho);
   grupo.querySelectorAll("tspan").forEach(function (linha, i) {
     linha.textContent = linhas[i];
@@ -256,7 +264,7 @@ function mostrarEtiqueta(elemento, xTela, yTela) {
   fundo.setAttribute("width", medida.width + 2 * folga);
   fundo.setAttribute("height", medida.height + 2 * folga);
 
-  // Fica um pouco abaixo e à direita do mouse; perto da borda, vai para o outro lado
+  // Abaixo e à direita do mouse; perto da borda, do outro lado
   const p = pontoDoDesenho(xTela, yTela);
   const largura = medida.width + 2 * folga;
   const altura = medida.height + 2 * folga;
@@ -273,69 +281,32 @@ function esconderEtiqueta() {
   if (grupo) grupo.setAttribute("visibility", "hidden");
 }
 
-// ---------- Caixa de detalhes abaixo do mapa ----------
-
-let municipioAberto = null;   // índice do município mostrado na caixa (null quando é um bairro)
-
-function mostrarMunicipio(indice) {
-  municipioAberto = indice;
-  const municipio = OUTROS_MUNICIPIOS[indice];
-  const chuva = chuvaDoMunicipio(indice);
-  const nivel = nivelDoMunicipio(indice);
-  const info = document.getElementById("info-mapa");
-
-  if (!chuva) {
-    info.innerHTML = `
-      <div class="info-titulo"><h3>${municipio.nome}</h3>${seloDoNivel(null)}</div>
-      <p>Sem previsão para este município agora. Use a chuva simulada.</p>`;
-    return;
-  }
-
-  let dados;
-  if (modo === "simulacao") {
-    dados = `<div><dt>Chuva simulada</dt><dd>${formatarMm(chuva.mmHoraMax)} mm/h</dd></div>`;
-  } else {
-    const pico = chuva.horaPico ? Number(chuva.horaPico.slice(11, 13)) + "h" : "sem chuva prevista";
-    dados = `
-      <div><dt>Chuva máxima (24 h)</dt><dd>${formatarMm(chuva.mmHoraMax)} mm/h</dd></div>
-      <div><dt>Horário do pico</dt><dd>${pico}</dd></div>
-      <div><dt>Total previsto hoje</dt><dd>${formatarMm(chuva.mmDia)} mm</dd></div>`;
-  }
-
-  info.innerHTML = `
-    <div class="info-titulo"><h3>${municipio.nome}</h3>${seloDoNivel(nivel)}</div>
-    <dl class="info-dados">${dados}</dl>
-    <p class="info-fazer"><strong>O que fazer:</strong> ${INFO_NIVEL[nivel].oQueFazer}</p>`;
+// Área clicada no mapa (ou achada pela localização) vira a escolhida; o resultado aparece em "Seu bairro"
+function mostrarMunicipioDoMapa(indice) {
+  escolherMunicipio(indice);   // simulacao.js
 }
 
-// Bairro clicado no mapa: vira o bairro escolhido do simulador
 function mostrarBairroDoMapa(bairro) {
-  municipioAberto = null;
   escolherBairro(bairro.id);   // simulacao.js
-  const nivel = nivelDoBairro(bairro);
-  document.getElementById("info-mapa").innerHTML = `
-    <div class="info-titulo"><h3>${bairro.nome}</h3>${seloDoNivel(nivel)}</div>
-    <p>${nomeDaRegiao(bairro.regiao)} · Subprefeitura ${bairro.subprefeitura}. Risco do bairro: ${RISCO_DO_BAIRRO[bairro.vulnerabilidade]}.</p>
-    <p class="info-fazer">Este bairro agora está escolhido no simulador. <a href="#simulador">Ver o resultado completo</a>.</p>`;
 }
 
 function escolherNoMapa(elemento) {
   const indice = elemento.getAttribute("data-indice");
   const idBairro = elemento.getAttribute("data-bairro");
-  if (indice !== null) mostrarMunicipio(Number(indice));
+  if (indice !== null) mostrarMunicipioDoMapa(Number(indice));
   if (idBairro !== null) mostrarBairroDoMapa(buscarBairro(idBairro));
 }
 
 // ---------- Eventos do mapa ----------
 
-// Arrastar para mover (só com o mapa ampliado)
-let arrasto = null;       // posição de onde o arrasto começou
-let arrastou = false;     // depois de arrastar, o clique que vem junto não escolhe nada
+// Arrastar (só ampliado)
+let arrasto = null;       // onde o arrasto começou
+let arrastou = false;     // após arrastar, o clique não escolhe
 
 svgMapa.addEventListener("pointerdown", function (evento) {
+  arrastou = false;   // clique novo: um arrasto anterior (que pode ter terminado fora do mapa) não vale mais
   if (vista.largura >= LARGURA_MAPA || evento.button !== 0) return;
   arrasto = { x: evento.clientX, y: evento.clientY, vistaX: vista.x, vistaY: vista.y };
-  arrastou = false;
 });
 
 svgMapa.addEventListener("pointermove", function (evento) {
@@ -374,7 +345,7 @@ svgMapa.addEventListener("dblclick", function (evento) {
   zoom(2, p.x, p.y);
 });
 
-// Ctrl + roda do mouse aproxima ou afasta; a roda sozinha continua rolando a página
+// Ctrl + roda: zoom (a roda sozinha rola a página)
 svgMapa.addEventListener("wheel", function (evento) {
   if (!evento.ctrlKey && !evento.metaKey) return;
   evento.preventDefault();
@@ -382,7 +353,7 @@ svgMapa.addEventListener("wheel", function (evento) {
   zoom(evento.deltaY < 0 ? 1.25 : 0.8, p.x, p.y);
 }, { passive: false });
 
-// Teclado: Tab passa pelas áreas, Enter escolhe, + e − aproximam, setas movem
+// Teclado: Enter escolhe, + e - dão zoom, setas movem
 svgMapa.addEventListener("keydown", function (evento) {
   const passo = vista.largura / 8;
   if (evento.key === "Enter" || evento.key === " ") escolherNoMapa(evento.target);
@@ -397,12 +368,21 @@ svgMapa.addEventListener("keydown", function (evento) {
   if (evento.key.startsWith("Arrow")) aplicarVista();
 });
 
+// Foco do teclado: contorno por cima de tudo (o traço do próprio elemento ficaria meio coberto pelos vizinhos)
+function marcarFoco(desenho) {
+  svgMapa.querySelectorAll(".mapa-foco path").forEach(caminho => caminho.setAttribute("d", desenho));
+}
+
 svgMapa.addEventListener("focusin", function (evento) {
   const area = evento.target.getBoundingClientRect();
   mostrarEtiqueta(evento.target, area.left + area.width / 2, area.top + area.height / 2);
+  if (evento.target.matches(":focus-visible")) marcarFoco(evento.target.getAttribute("d") || "");
 });
 
-svgMapa.addEventListener("focusout", esconderEtiqueta);
+svgMapa.addEventListener("focusout", function () {
+  esconderEtiqueta();
+  marcarFoco("");
+});
 
 // Botões de zoom
 document.getElementById("zoom-mais").addEventListener("click", () => zoomNoCentro(1.5));
@@ -415,7 +395,8 @@ document.getElementById("zoom-capital").addEventListener("click", function () {
   mostrarArea(areaDoElemento(svgMapa.querySelector(".mapa-borda-capital")), 1.1);
 });
 document.getElementById("zoom-escolhido").addEventListener("click", function () {
-  mostrarArea(areaDoElemento(svgMapa.querySelector(".mapa-bairro.escolhido")), 3);
+  // Bairro: margem 3, para ver os vizinhos; cidade, que é maior: 1,5
+  mostrarArea(areaDoElemento(svgMapa.querySelector(".escolhido")), municipioEscolhido === null ? 3 : 1.5);
 });
 
 desenharMapa();

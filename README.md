@@ -6,42 +6,45 @@ Grupo **QuickStart** · Global Solution 2026 · CitizenTech (FIAP)
 
 ## Descrição
 
-Quem mora em bairro de São Paulo que alaga costuma descobrir o problema quando a água já chegou, sem saber para onde ir. O Clima Safe cruza a previsão de chuva da Open-Meteo com o risco de alagamento dos 96 bairros (distritos oficiais) da cidade de São Paulo, calculado com dados da Prefeitura. Ele mostra o nível de alerta (verde, amarelo, laranja ou vermelho, pelas faixas do INMET), o que fazer e o ponto de apoio público mais próximo. O bairro pode ser achado pela localização do aparelho (com a permissão do usuário), pelo nome ou clicando no mapa interativo, que também mostra os 39 municípios da Grande São Paulo. O morador também pode se cadastrar para receber o alerta do seu bairro. O Clima Safe não substitui o alerta oficial da Defesa Civil (SMS 40199): explica o que a chuva prevista significa para o bairro e para onde ir. O projeto atende aos ODS 11 (Cidades e comunidades sustentáveis) e 13 (Ação contra a mudança global do clima).
+Quem mora em bairro de São Paulo que alaga costuma descobrir o problema quando a água já chegou, sem saber para onde ir. O Clima Safe cruza a previsão de chuva da Open-Meteo com o risco de alagamento dos 96 bairros (distritos oficiais) da cidade de São Paulo, calculado com dados da Prefeitura. Ele mostra o nível de alerta (verde, amarelo, laranja ou vermelho, pelas faixas do INMET), o que fazer e o ponto de apoio público mais próximo. O bairro pode ser achado pela localização do aparelho (com a permissão do usuário), pelo nome ou clicando no mapa interativo, que também mostra os 39 municípios da Grande São Paulo. As outras 38 cidades da Grande São Paulo também podem ser escolhidas, com o alerta só pela chuva. O morador também pode se cadastrar para receber o alerta do seu bairro. O Clima Safe não substitui o alerta oficial da Defesa Civil (SMS 40199): explica o que a chuva prevista significa para o bairro e para onde ir. O projeto atende aos ODS 11 (Cidades e comunidades sustentáveis) e 13 (Ação contra a mudança global do clima).
 
 ## Como abrir e executar
 
 1. Baixe ou descompacte a pasta.
 2. Abra o arquivo `index.html` no navegador (duplo clique). Não precisa instalar nada nem rodar servidor.
-3. Só a previsão real usa a internet. Sem internet, use o controle "Simular chuva" da página Solução: ele recalcula os alertas dos bairros e do mapa sem chamar a API.
+3. Só a previsão real (página Solução) usa a internet. Sem internet, use a página Simulador: ela recalcula os alertas dos bairros e do mapa sem chamar a API.
 
 ## Páginas
 
 | Página | Conteúdo |
 | --- | --- |
-| `index.html` | Cidadão, problema com dado real e fonte, como funciona, ODS |
-| `solucao.html` | Simulador (bairro, previsão real, chuva simulada), botão "Usar minha localização", busca por nome, mapa da Grande São Paulo em SVG com zoom, cards dos 96 bairros separados por região, com filtros de região, risco e nível e ordenação, regras do cálculo |
-| `impacto.html` | Indicadores, como o impacto cresce, contribuição para os ODS 11 e 13, ecossistema |
-| `equipe.html` | Integrantes e formulário de cadastro para alertas |
+| `index.html` | Cidadão, problema com dado real e fonte, como funciona, ODS 11 e 13 (no topo) |
+| `solucao.html` | Previsão real: busca a previsão da Open-Meteo ao abrir (guardada por 10 minutos) e mostra o mapa da Grande São Paulo em SVG com zoom e, ao lado, "Seu bairro" (campo único para digitar ou escolher o bairro ou uma das outras 38 cidades da Grande SP, "Usar minha localização" e o painel com gráfico das próximas 24 h, lista do que fazer em cada nível de alerta, ponto de apoio com o botão "Como chegar", "Receber alertas deste bairro" e "Compartilhar no WhatsApp"); os próximos 7 dias do lugar escolhido, embaixo do mapa; bairro escolhido em destaque e lista recolhível dos 96 bairros, com filtros; regras do cálculo |
+| `simulador.html` | Simulador de chuva: o controle (0 a 100 mm/h), que fica preso no topo ao rolar no computador, recalcula o mapa e o painel do bairro sem usar a internet |
+| `cadastro.html` | Formulário de cadastro para alertas (já vem com o bairro escolhido no simulador) e como funciona o aviso |
+| `impacto.html` | Cartões de números, gráficos em SVG do risco por região e dos moradores por risco, uso do protótipo com cadastros por bairro, próximos passos, ODS 11 e 13 e quem faz parte |
+| `equipe.html` | Integrantes e sobre o projeto |
 
 ## Estrutura do projeto
 
 ```
 clima-safe/
-├── index.html, solucao.html, impacto.html, equipe.html
+├── index.html, solucao.html, simulador.html, cadastro.html, impacto.html, equipe.html
 ├── README.md
 ├── css/
 │   └── style.css        # único arquivo de estilo
 ├── js/
-│   ├── estado.js        # tamanho do texto, cadastros e alertas, levados de uma página para outra
+│   ├── estado.js        # tamanho do texto, contraste, bairro ou cidade escolhidos, cadastros e alertas, levados de uma página para outra (no `<head>`, para o texto e o contraste não piscarem)
 │   ├── dados.js         # array dos 96 bairros e dos 40 pontos de apoio (gerado das bases da Prefeitura)
-│   ├── api.js           # previsão da Open-Meteo (todos os lugares numa só chamada)
-│   ├── simulacao.js     # regra de alerta, painel e cards (página Solução)
+│   ├── api.js           # previsão da Open-Meteo: 24 h de todos os lugares numa só chamada e 7 dias do lugar escolhido
+│   ├── campo-bairro.js  # campo único do bairro: digitar filtra, a seta mostra todos
+│   ├── simulacao.js     # regra de alerta, painel e cards (Solução: previsão real; Simulador: chuva do controle)
 │   ├── localizacao.js   # "Usar minha localização": acha o bairro pelo contorno dos distritos
 │   ├── mapa-dados.js    # contornos: 39 municípios (IBGE) e 96 bairros da capital (GeoSampa)
 │   ├── mapa.js          # mapa em SVG
 │   ├── formulario.js    # validação do cadastro
-│   ├── impacto.js       # indicadores da página Impacto
-│   ├── fonte.js         # botões A− e A+ (tamanho do texto)
+│   ├── impacto.js       # indicadores e gráficos da página Impacto
+│   ├── fonte.js         # botões A-, A+ (tamanho do texto) e Alto contraste
 │   ├── menu.js          # menu no celular
 │   └── topo.js          # botão "Topo" do canto inferior esquerdo
 └── img/
@@ -50,14 +53,16 @@ clima-safe/
 
 ## Regra de alerta
 
-| Nível | Chuva por hora | Chuva no dia |
+| Nível | Chuva por hora | Chuva em 24 h |
 | --- | --- | --- |
 | Verde (sem alerta) | menos de 20 mm/h | menos de 50 mm |
 | Amarelo (perigo potencial) | 20 a menos de 30 mm/h | não define |
 | Laranja (perigo) | 30 a 60 mm/h | 50 a 100 mm |
 | Vermelho (grande perigo) | mais de 60 mm/h | mais de 100 mm |
 
-Nos limites exatos vale o nível mais alto. Nos bairros, a vulnerabilidade ajusta o nível só quando já há alerta: vulnerabilidade 3 sobe um nível, 2 mantém e 1 desce um nível (nunca abaixo de verde). No mapa, a cor dos municípios em volta da capital usa só a chuva, porque o risco foi levantado apenas para os bairros da capital. Na simulação, a chuva de cada município varia entre 0,6 e 1,4 vez o valor do controle, sorteada ao abrir a página, para o mapa não ficar todo da mesma cor.
+As duas colunas valem para as próximas 24 horas, a partir da hora atual. A Open-Meteo dá a chuva de cada hora como a soma da hora anterior (o valor de 15:00 é a chuva das 14h às 15h); o site mostra cada hora pelo começo dela, como em "pico das 15h às 16h". Nos limites, 20, 30 e 50 já contam no nível de cima; 60 mm/h e 100 mm ainda são laranja (o vermelho é acima disso, como no INMET). Nos bairros, a vulnerabilidade ajusta o nível só quando já há alerta: vulnerabilidade 3 sobe um nível, 2 mantém e 1 desce um nível (nunca abaixo de verde). No mapa, a cor dos municípios em volta da capital usa só a chuva, porque o risco foi levantado apenas para os bairros da capital. Na simulação, a chuva de cada município varia entre 0,6 e 1,4 vez o valor do controle, sorteada ao abrir a página, para o mapa não ficar todo da mesma cor.
+
+Nos próximos 7 dias (só na Solução), a mesma regra vale para cada dia: a hora mais chuvosa e o total do dia, com o ajuste do bairro. Hoje conta só as horas que faltam, e a partir do quarto dia a previsão é tendência.
 
 ### Risco de cada bairro (vulnerabilidade)
 
@@ -77,8 +82,10 @@ HTML5, CSS3 (flexbox, grid, media queries), JavaScript (DOM, eventos, `fetch` co
 - Todo campo tem `label`; o grupo de rádio usa `fieldset` e `legend`; erros ligados ao campo com `aria-describedby` e `aria-invalid`.
 - Contraste do texto de pelo menos 4,5:1; o nível de alerta sempre aparece escrito, nunca só pela cor.
 - Tudo funciona pelo teclado, inclusive o mapa: Tab passa pelos municípios e bairros e mostra a etiqueta com nome, sub-região e coordenadas; Enter mostra a chuva e o que fazer.
-- Botões A− e A+ no topo mudam o tamanho do texto em todas as páginas.
-- Botão "Topo" no canto inferior esquerdo para voltar ao início da página.
+- O campo do bairro segue o padrão combobox do W3C: digitar filtra a lista, as setas percorrem, Enter escolhe e Esc cancela.
+- Botões A- e A+ no topo mudam o tamanho do texto, e o botão "Alto contraste" deixa o site em preto no branco, em todas as páginas.
+- Botão "Topo" no canto inferior esquerdo (no celular, só a seta) para voltar ao início da página.
+- Os gráficos em SVG (página Impacto e painel do simulador) têm descrição em texto para o leitor de tela, e os valores também aparecem escritos.
 
 ## Fontes dos dados
 
@@ -113,13 +120,17 @@ Diário do Transporte (19/01/2024): https://diariodotransporte.com.br/2024/01/19
 
 ## Limitações conhecidas
 
-- Os pontos de apoio são 40 Centros Esportivos da Prefeitura usados como referência. Não são abrigos oficiais confirmados e a capacidade não é conhecida. O de cada bairro é o mais próximo do centro do distrito em linha reta (até 27,8 km, em Marsilac). Só 10 têm telefone. O site orienta a confirmar com a Defesa Civil (199).
+- Os pontos de apoio são Centros Esportivos da Prefeitura usados como referência: a base tem 40, e 39 deles são o mais próximo de algum bairro (é o número que a página Impacto mostra). Não são abrigos oficiais confirmados e a capacidade não é conhecida. O de cada bairro é o mais próximo do centro do distrito em linha reta (até 27,8 km, em Marsilac). Só 10 têm telefone. O site orienta a confirmar com a Defesa Civil (199).
 - Os "bairros" são os 96 distritos oficiais da cidade. Bairros menores aparecem dentro do distrito (por exemplo, Belenzinho em Belém e Chácara Santo Antônio em Santo Amaro).
-- A previsão real busca 134 lugares (96 bairros e 38 municípios) numa só chamada; para a Open-Meteo, isso conta como 134 consultas.
-- A localização só é pedida quando a pessoa clica em "Usar minha localização", e o navegador pede a permissão. As coordenadas são usadas só na página, para achar o distrito (teste do ponto dentro do contorno do GeoSampa), e não são guardadas nem enviadas. Em computador sem GPS a posição pode errar por alguns quilômetros; nesse caso o site avisa para conferir o bairro. Fora da capital, o site mostra o município da Grande São Paulo no mapa.
+- Nas outras 38 cidades da Grande São Paulo, o nível vem só da chuva (o risco de alagamento por bairro é só da capital) e o site não indica ponto de apoio: orienta a perguntar à Defesa Civil (199).
+- A previsão real busca 134 lugares (96 bairros e 38 municípios) numa só chamada; para a Open-Meteo, isso conta como 134 consultas. Os próximos 7 dias vêm de outra chamada, só do lugar escolhido, guardada por 30 minutos.
+- A localização só é pedida quando a pessoa clica em "Usar minha localização", e o navegador pede a permissão. As coordenadas são usadas só na página, para achar o distrito (teste do ponto dentro do contorno do GeoSampa), e não são guardadas nem enviadas. Em computador sem GPS a posição pode errar por alguns quilômetros; nesse caso o site avisa para conferir o bairro. Fora da capital, o site escolhe a cidade da Grande São Paulo onde a pessoa está.
 - Os indicadores de cadastros e alertas contam o que foi feito no site. Nenhum dado sai do computador: o site guarda só quantas pessoas se cadastraram em cada bairro.
 - Com o site aberto direto do arquivo, alguns navegadores (como o Firefox) não deixam as páginas dividirem o `localStorage`. Por isso o tamanho do texto e as contagens também passam de uma página para outra no endereço dos links (`impacto.html?fonte=2&cadastros=5:1...`).
 - A Open-Meteo gratuita tem limite de uso. Se a previsão real falhar ou demorar mais de 10 segundos, o site avisa e o simulador continua funcionando.
+- "Como chegar" abre o Google Maps e "Compartilhar no WhatsApp" abre o WhatsApp, só quando a pessoa clica: o site não envia nada sozinho. Com a chuva simulada, a mensagem começa com "SIMULAÇÃO (não é alerta real)".
+- O gráfico das próximas 24 horas e os próximos 7 dias só aparecem com a previsão real (página Solução). A partir do quarto dia, a previsão é tendência: os modelos globais usados pela Open-Meteo têm pontos de 10 a 25 km, e a chuva forte de verão em São Paulo costuma ser bem localizada.
+- A página Solução busca a previsão ao abrir e guarda o resultado por 10 minutos na sessão do navegador, para não repetir a chamada a cada página.
 - O cadastro é um protótipo: nenhum alerta é enviado de verdade. Depois do cadastro, o site indica o SMS 40199 da Defesa Civil.
 
 ## Integrantes

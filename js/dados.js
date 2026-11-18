@@ -1,20 +1,8 @@
-// dados.js — os 96 bairros (distritos oficiais) da cidade de São Paulo e os pontos de apoio.
-// Este arquivo foi gerado a partir das bases abaixo; os números podem ser conferidos nelas.
-//
-// - Distritos, subprefeituras, áreas de risco e ocorrências: GeoSampa, Prefeitura de São Paulo
-//   (camadas distrito_municipal, risco_hidrologico, risco_ocorrencia_alagamento e risco_ocorrencia_inundacao).
-// - População: Censo 2022 por distrito (Prefeitura de São Paulo).
-// - Região (Centro, Norte, Leste, Oeste, Sul): divisão da Prefeitura por subprefeitura.
-// - Pontos de apoio: Centros Esportivos da Prefeitura (camada equipamento_esporte_centro_esportivo do GeoSampa).
-//   Não são abrigos oficiais da Defesa Civil. O ponto de apoio de cada bairro é o mais próximo,
-//   em linha reta, do centro do distrito. Telefone só onde a página da SEME informa.
-// - "noticia": ocorrências com fonte levantadas em jornais para alguns bairros.
-//
-// Vulnerabilidade (regra do projeto, explicada na página Solução):
-// 3 = pelo menos 300 moradias em áreas de risco alto ou muito alto (R3 ou R4)
-//     ou pelo menos 10 ocorrências de alagamento ou inundação em 2026;
-// 2 = alguma área de risco mapeada ou alguma ocorrência em 2026;
-// 1 = nenhuma área de risco mapeada e nenhuma ocorrência em 2026.
+// Os 96 bairros de São Paulo e os 40 pontos de apoio.
+// Gerado das bases da Prefeitura: GeoSampa (distritos, áreas de risco, ocorrências e centros
+// esportivos) e Censo 2022. Os pontos de apoio são Centros Esportivos, não abrigos oficiais.
+// Vulnerabilidade: 3 = 300+ moradias em risco R3/R4 ou 10+ ocorrências em 2026;
+// 2 = alguma área de risco ou ocorrência; 1 = nenhuma.
 
 const REGIOES = ["Centro", "Norte", "Leste", "Oeste", "Sul"];
 
@@ -1914,13 +1902,12 @@ function buscarAbrigo(bairro) {
   return ABRIGOS.find(abrigo => abrigo.id === bairro.abrigoId);
 }
 
-// Nome da região como aparece na tela: "Zona Leste", "Centro"...
+// "Zona Leste", "Centro"...
 function nomeDaRegiao(regiao) {
   return regiao === "Centro" ? "Centro" : "Zona " + regiao;
 }
 
-// Coloca os bairros como opções de um <select>, agrupados por região
-// (página Solução e formulário). Se receber uma lista, mostra só os bairros dela.
+// Opções de um <select>, agrupadas por região; "lista" (opcional) limita os bairros
 function preencherSelectBairros(select, lista) {
   const bairros = lista || BAIRROS;
   let html = "";
@@ -1933,7 +1920,7 @@ function preencherSelectBairros(select, lista) {
     }
     html += "</optgroup>";
   }
-  // Mantém as opções que já estavam escritas no HTML (por exemplo, "Escolha seu bairro")
+  // Mantém as opções do HTML (ex.: "Escolha seu bairro")
   select.querySelectorAll("optgroup").forEach(grupo => grupo.remove());
   select.insertAdjacentHTML("beforeend", html);
 }

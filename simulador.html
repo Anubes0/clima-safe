@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulador — Clima Safe</title>
+  <meta name="description" content="Simule uma chuva e veja como o alerta de enchente muda em cada bairro de São Paulo.">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/estado.js"></script>
+</head>
+<body id="topo" data-modo="simulacao">
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="faixa-emergencia">
+    <div class="container faixa-grade">
+      <p>Em emergência, ligue: <a href="tel:199">Defesa Civil 199</a> · <a href="tel:193">Bombeiros 193</a></p>
+      <div class="ajuste-fonte" role="group" aria-label="Ajustes de leitura">
+        <span aria-hidden="true">Texto</span>
+        <button type="button" id="fonte-menor" aria-label="Diminuir o texto">A-</button>
+        <button type="button" id="fonte-maior" aria-label="Aumentar o texto">A+</button>
+        <button type="button" id="alto-contraste" aria-pressed="false">Alto contraste</button>
+      </div>
+    </div>
+  </div>
+  <header class="cabecalho">
+    <div class="container cabecalho-grade">
+      <a class="logo" href="index.html">
+        <img src="img/logo.svg" alt="" width="40" height="40">
+        <span>Clima Safe</span>
+      </a>
+      <button type="button" class="botao-menu" id="botao-menu" aria-expanded="false" aria-controls="menu-principal">Menu</button>
+      <nav class="navegacao" aria-label="Principal">
+        <ul class="menu" id="menu-principal">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="solucao.html">Solução</a></li>
+          <li><a href="simulador.html" aria-current="page">Simulador</a></li>
+          <li><a href="impacto.html">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+          <li class="menu-cta"><a href="cadastro.html">Cadastro</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="topo-pagina" aria-labelledby="titulo-simulador-pagina">
+      <div class="container">
+        <p class="sobretitulo">Simulador</p>
+        <h1 id="titulo-simulador-pagina">Simule uma chuva no seu bairro</h1>
+        <p class="lead">Arraste o controle e veja como o alerta muda em cada bairro. Aqui a chuva é simulada: para a previsão de verdade, veja a página <a href="solucao.html">Solução</a>.</p>
+      </div>
+    </section>
+    <section class="secao secao-larga" id="simulador" aria-labelledby="titulo-simulador">
+      <div class="container secao-grade">
+        <h2 id="titulo-simulador">Simulador de chuva</h2>
+        <div class="secao-corpo">
+          <div class="cenario cenario-fixo" role="group" aria-label="Chuva simulada">
+            <div class="cenario-chuva">
+              <label for="faixa-chuva">Simular chuva: <span class="valor-chuva" id="valor-chuva">0 mm/h</span></label>
+              <input type="range" id="faixa-chuva" min="0" max="100" step="1" value="0">
+              <div class="escala" aria-hidden="true">
+                <span class="e0">0</span><span class="e20">20</span><span class="e30">30</span><span class="e60">60</span><span class="e100">100</span>
+              </div>
+            </div>
+          </div>
+          <p class="nota cenario-nota">A chuva escolhida vale para o mapa e para o seu bairro.</p>
+          <div class="painel-interativo">
+            <div class="area-mapa" id="mapa">
+              <h3>Mapa da Grande São Paulo</h3>
+              <p>A capital aparece dividida nos seus 96 bairros; em volta, os outros 38 municípios. A cor mostra o nível de alerta para a chuva escolhida. <strong>Clique num bairro ou numa cidade para escolher.</strong></p>
+              <div class="mapa-ferramentas" role="group" aria-label="Zoom do mapa">
+                <button type="button" class="botao botao-secundario botao-zoom" id="zoom-mais" aria-label="Aproximar">+</button>
+                <button type="button" class="botao botao-secundario botao-zoom" id="zoom-menos" aria-label="Afastar">-</button>
+                <button type="button" class="botao botao-secundario" id="zoom-capital">Ver a capital</button>
+                <button type="button" class="botao botao-secundario" id="zoom-escolhido">Ver o bairro escolhido</button>
+                <button type="button" class="botao botao-secundario" id="zoom-tudo">Ver tudo</button>
+                <span class="nivel-zoom" id="nivel-zoom" aria-live="polite"></span>
+                <a class="pular-mapa" href="#seu-bairro">Pular o mapa</a>
+              </div>
+              <div class="mapa-caixa">
+                <svg id="mapa-svg" role="group" aria-label="Mapa da Grande São Paulo com o nível de alerta de cada bairro da capital e de cada município"></svg>
+              </div>
+              <p class="nota">Comandos: zoom com botões, duplo clique ou Ctrl + roda do mouse. Segure e arraste para mover.</p>
+              <ul class="legenda-mapa">
+                <li><span class="amostra amostra-verde"></span>Verde: sem alerta</li>
+                <li><span class="amostra amostra-amarelo"></span>Amarelo: perigo potencial</li>
+                <li><span class="amostra amostra-laranja"></span>Laranja: perigo</li>
+                <li><span class="amostra amostra-vermelho"></span>Vermelho: grande perigo</li>
+                <li><span class="amostra amostra-indisponivel"></span>Cinza: sem previsão</li>
+              </ul>
+              <p class="contagem" id="resumo-mapa"></p>
+            </div>
+            <div class="area-bairro" id="seu-bairro">
+              <div class="controles">
+                <fieldset class="escolha-bairro">
+                  <legend>Seu bairro</legend>
+                  <div class="campo">
+                    <label for="campo-bairro" id="rotulo-bairro">Digite ou escolha o bairro ou a cidade</label>
+                    <div class="combobox" id="caixa-bairro">
+                      <input type="text" id="campo-bairro" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="opcoes-bairro" aria-describedby="aviso-bairro" autocomplete="off" spellcheck="false" placeholder="Ex.: Penha, Sé, Santa Isabel">
+                      <button type="button" class="combobox-botao" id="botao-lista-bairro" tabindex="-1" aria-label="Mostrar todos os bairros e cidades" aria-controls="opcoes-bairro" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6z"/></svg>
+                      </button>
+                      <div class="combobox-lista" id="opcoes-bairro" role="listbox" aria-labelledby="rotulo-bairro" hidden></div>
+                    </div>
+                    <p class="nota" id="aviso-bairro" role="status"></p>
+                  </div>
+                  <div class="acao-localizacao">
+                    <button type="button" class="botao-texto" id="btn-localizacao">
+                      <svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                      <span id="texto-localizacao">Usar minha localização</span>
+                    </button>
+                    <p class="status" id="status-localizacao" role="status"></p>
+                  </div>
+                </fieldset>
+              </div>
+              <p class="visualmente-oculto" id="aviso-painel" role="status"></p>
+              <div class="painel" id="painel-resultado"></div>
+            </div>
+          </div>
+          <p class="nota">As regras do alerta estão em <a href="solucao.html#regras">Solução > Como calculamos</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="container rodape-grade">
+      <div>
+        <p class="rodape-titulo">Clima Safe · 2026</p>
+        <p>Protótipo do grupo QuickStart para a Global Solution CitizenTech (FIAP). Não substitui os alertas oficiais da Defesa Civil (199 e SMS 40199) nem dos Bombeiros (193).</p>
+      </div>
+      <nav aria-label="Rodapé">
+        <p class="rodape-titulo">Páginas</p>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="solucao.html">Solução</a></li>
+          <li><a href="simulador.html">Simulador</a></li>
+          <li><a href="impacto.html">Impacto</a></li>
+          <li><a href="equipe.html">Equipe</a></li>
+          <li><a href="cadastro.html">Cadastro</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="rodape-titulo">Fontes dos dados</p>
+        <ul>
+          <li><a href="https://open-meteo.com/">Open-Meteo: previsão de chuva</a></li>
+          <li><a href="https://www.cnnbrasil.com.br/nacional/chuva-entenda-os-alertas-do-inmet-para-temporais/">INMET: faixas de alerta de chuva (resumo da CNN Brasil)</a></li>
+          <li><a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/21565-em-2010-brasil-tinha-8-3-milhoes-de-pessoas-morando-em-areas-com-risco-de-desastres-naturais.html">IBGE e CEMADEN: população em áreas de risco</a></li>
+          <li><a href="https://geosampa.prefeitura.sp.gov.br/">GeoSampa (Prefeitura de SP): bairros, áreas de risco, ocorrências e centros esportivos</a></li>
+          <li><a href="https://servicodados.ibge.gov.br/api/docs">IBGE: municípios e contornos da Grande São Paulo</a></li>
+          <li><a href="https://prefeitura.sp.gov.br/web/subprefeituras/w/munic%C3%ADpio-de-s%C3%A3o-paulo-subprefeituras-e-distritos-municipais-1">Prefeitura de SP: Censo 2022 por distrito</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <a class="voltar-topo" id="voltar-topo" href="#topo" aria-label="Voltar ao topo da página">↑ <span class="voltar-topo-texto">Topo</span></a>
+
+  <script src="js/dados.js"></script>
+  <script src="js/mapa-dados.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/mapa.js"></script>
+  <script src="js/campo-bairro.js"></script>
+  <script src="js/simulacao.js"></script>
+  <script src="js/localizacao.js"></script>
+  <script src="js/fonte.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/topo.js"></script>
+</body>
+</html>
