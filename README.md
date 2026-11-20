@@ -144,4 +144,4 @@ O projeto não utiliza frameworks nem bibliotecas externas. As fontes de dados s
 
 ## Pitch
 
-Link do vídeo: A preencher
+Link do vídeo: https://youtu.be/Z_CbzsYhD9k
